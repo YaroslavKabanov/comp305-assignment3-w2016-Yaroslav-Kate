@@ -1,0 +1,27 @@
+{
+  "name": "comp392-lesson8",
+  "authors": [
+    "Tom Tsiliopoulos <tsiliopoulos@hotmail.com>",
+    "Yaroslav Kabanov <ya.kabanov@gmail.com>",
+    "Kateryna Bilokhvost <bilokhvost.k@gmail.com>"
+  ],
+  "description": "COMP392 Assignment 3(Kabanov, Bilokhvost) for Advanced Graphics",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "https://github.com/bilokhvost/comp392-assignment3.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "Scripts/lib"
+  ],
+  "dependencies": {
+    "three.js": "threejs#*",
+    "dat-gui": "~0.5.1",
+    "stats.js": "*",
+    "Physijs": "physijs#*"
+  }
+}
