@@ -204,7 +204,7 @@ var game = (() => {
         scene.add(wallSix);
         console.log("Added wallSix to Scene");
         
-          wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0x0000ff }), 0, 0), 0);
+        wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0xffffff }), 0, 0), 0);
         wallSeven.position.set(8.13,5,-10.61);
         wallSeven.receiveShadow = true;
         wallSeven.castShadow = true;
