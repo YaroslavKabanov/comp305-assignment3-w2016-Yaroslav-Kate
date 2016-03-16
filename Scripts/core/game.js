@@ -65,6 +65,7 @@ var game = (function () {
     var isGrounded;
     var velocity = new Vector3(0, 0, 0);
     var prevTime = 0;
+    var wallSeven;
     function init() {
         // Create to HTMLElements
         blocker = document.getElementById("blocker");
@@ -171,6 +172,13 @@ var game = (function () {
         wallSix.name = "wallSix";
         scene.add(wallSix);
         console.log("Added wallSix to Scene");
+        wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallSeven.position.set(8.13, 5, -10.61);
+        wallSeven.receiveShadow = true;
+        wallSeven.castShadow = true;
+        wallSeven.name = "wallSeven";
+        scene.add(wallSeven);
+        console.log("Added wallSeven to Scene");
         // Player Object
         playerGeometry = new BoxGeometry(2, 2, 2);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
