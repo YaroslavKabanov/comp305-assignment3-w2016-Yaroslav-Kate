@@ -9,10 +9,12 @@ var CubeGeometry = THREE.CubeGeometry;
 var PlaneGeometry = THREE.PlaneGeometry;
 var SphereGeometry = THREE.SphereGeometry;
 var Geometry = THREE.Geometry;
+var Line = THREE.Line;
 var AxisHelper = THREE.AxisHelper;
 var LambertMaterial = THREE.MeshLambertMaterial;
 var MeshBasicMaterial = THREE.MeshBasicMaterial;
 var Material = THREE.Material;
+var LineBasicMaterial = THREE.LineBasicMaterial;
 var Mesh = THREE.Mesh;
 var Object3D = THREE.Object3D;
 var SpotLight = THREE.SpotLight;
@@ -77,10 +79,14 @@ var game = (function () {
     var wallNineteen;
     var wallTwenty;
     var wallTwentyOne;
+    var mouseControls;
     var keyboardControls;
     var isGrounded;
     var velocity = new Vector3(0, 0, 0);
     var prevTime = 0;
+    var directionLineMaterial;
+    var directionLineGeometry;
+    var directionLine;
     function init() {
         // Create to HTMLElements
         blocker = document.getElementById("blocker");
@@ -89,7 +95,9 @@ var game = (function () {
         havePointerLock = 'pointerLockElement' in document ||
             'mozPointerLockElement' in document ||
             'webkitPointerLockElement' in document;
+        // Instantiate Game Controls
         keyboardControls = new objects.KeyboardControls();
+        mouseControls = new objects.MouseControls();
         if (havePointerLock) {
             element = document.body;
             instructions.addEventListener('click', function () {
@@ -311,6 +319,16 @@ var game = (function () {
                 console.log("player hit the sphere");
             }
         });
+        // Add DirectionLine
+        directionLineMaterial = new LineBasicMaterial({ color: 0xffff00 });
+        directionLineGeometry = new Geometry();
+        directionLineGeometry.vertices.push(new Vector3(0, 0, 0)); // line origin
+        directionLineGeometry.vertices.push(new Vector3(0, 0, -50)); // end of the line
+        directionLine = new Line(directionLineGeometry, directionLineMaterial);
+        player.add(directionLine);
+        console.log("Added DirectionLine to the Player");
+        // create parent-child relationship with camera and player
+        player.add(camera);
         // add controls
         gui = new GUI();
         control = new Control();
@@ -366,49 +384,64 @@ var game = (function () {
     // Setup main game loop
     function gameLoop() {
         stats.update();
-        if (keyboardControls.enabled) {
-            velocity = new Vector3();
-            var time = performance.now();
-            var delta = (time - prevTime) / 1000;
-            if (isGrounded) {
-                if (keyboardControls.moveForward) {
-                    console.log("Moving Forward");
-                    velocity.z -= 400.0 * delta;
-                }
-                if (keyboardControls.moveLeft) {
-                    console.log("Moving left");
-                    velocity.x -= 400.0 * delta;
-                }
-                if (keyboardControls.moveBackward) {
-                    console.log("Moving Backward");
-                    velocity.z += 400.0 * delta;
-                }
-                if (keyboardControls.moveRight) {
-                    console.log("Moving Right");
-                    velocity.x += 400.0 * delta;
-                }
-                if (keyboardControls.jump) {
-                    console.log("Jumping");
-                    velocity.y += 2000.0 * delta;
-                    if (player.position.y > 4) {
-                        isGrounded = false;
-                    }
-                }
-            }
-        }
-        player.applyCentralForce(velocity);
-        prevTime = time;
+        checkControls();
         // render using requestAnimationFrame
         requestAnimationFrame(gameLoop);
         // render the scene
         renderer.render(scene, camera);
     }
+    // Check Controls Function
+    function checkControls() {
+        if (keyboardControls.enabled) {
+            velocity = new Vector3();
+            var time = performance.now();
+            var delta = (time - prevTime) / 1000;
+            if (isGrounded) {
+                var direction = new Vector3(0, 0, 0);
+                if (keyboardControls.moveForward) {
+                    velocity.z -= 400.0 * delta;
+                }
+                if (keyboardControls.moveLeft) {
+                    velocity.x -= 400.0 * delta;
+                }
+                if (keyboardControls.moveBackward) {
+                    velocity.z += 400.0 * delta;
+                }
+                if (keyboardControls.moveRight) {
+                    velocity.x += 400.0 * delta;
+                }
+                if (keyboardControls.jump) {
+                    velocity.y += 4000.0 * delta;
+                    if (player.position.y > 4) {
+                        isGrounded = false;
+                    }
+                }
+                player.setDamping(0.7, 0.1);
+                // Changing player's rotation
+                player.setAngularVelocity(new Vector3(0, mouseControls.yaw, 0));
+                direction.addVectors(direction, velocity);
+                direction.applyQuaternion(player.quaternion);
+                if (Math.abs(player.getLinearVelocity().x) < 20 && Math.abs(player.getLinearVelocity().y) < 10) {
+                    player.applyCentralForce(direction);
+                }
+                cameraLook();
+            } // isGrounded ends
+            //reset Pitch and Yaw
+            mouseControls.pitch = 0;
+            mouseControls.yaw = 0;
+            prevTime = time;
+        } // Controls Enabled ends
+        else {
+            player.setAngularVelocity(new Vector3(0, 0, 0));
+        }
+    }
     //Camera Look function 
     function cameraLook() {
         var zenith = THREE.Math.degToRad(90);
         var nadir = THREE.Math.degToRad(-90);
-        //        var cameraPitch:number = camera.rotation.x + mouseControls.pitch;
-        //    camera.rotation.x = cameraPitch;
+        var cameraPitch = camera.rotation.x + mouseControls.pitch;
+        // Constrain the Camera Pitch
+        camera.rotation.x = THREE.Math.clamp(cameraPitch, nadir, zenith);
     }
     // Setup default renderer
     function setupRenderer() {
@@ -422,8 +455,8 @@ var game = (function () {
     // Setup main camera for the scene
     function setupCamera() {
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 1000);
-        camera.position.set(70, 100, 80);
-        camera.lookAt(new Vector3(0, 0, 0));
+        //   camera.position.set(70, 100, 80);
+        //   camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
     window.onload = init;
