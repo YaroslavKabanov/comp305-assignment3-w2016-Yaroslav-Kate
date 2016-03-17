@@ -62,17 +62,34 @@ var game = (() => {
     var sphereGeometry: SphereGeometry;
     var sphereMaterial: Physijs.Material;
     var sphere: Physijs.Mesh;
+    // walls 
     var wallOne: Physijs.Mesh;
     var wallTwo: Physijs.Mesh;
     var wallThree: Physijs.Mesh;
     var wallFour: Physijs.Mesh;
     var wallFive: Physijs.Mesh;
     var wallSix: Physijs.Mesh;
+    var wallSeven:Physijs.Mesh;
+    var wallEight:Physijs.Mesh;
+    var wallNine:Physijs.Mesh;
+    var wallTen:Physijs.Mesh;
+    var wallEleven:Physijs.Mesh;
+    var wallTwelve:Physijs.Mesh;
+    var wallThirteen:Physijs.Mesh;
+    var wallFourteen:Physijs.Mesh;
+    var wallFifteen:Physijs.Mesh;
+    var wallSixteen:Physijs.Mesh;
+    var wallSeventeen:Physijs.Mesh;
+    var wallEighteen:Physijs.Mesh;
+    var wallNineteen:Physijs.Mesh;
+    var wallTwenty:Physijs.Mesh;
+    var wallTwentyOne:Physijs.Mesh;
+    
     var keyboardControls: objects.KeyboardControls;
     var isGrounded: boolean;
     var velocity: Vector3 = new Vector3(0, 0, 0);
     var prevTime: number = 0;
-    var wallSeven:Physijs.Mesh;
+    
 
     function init() {
         // Create to HTMLElements
@@ -130,7 +147,7 @@ var game = (() => {
         spotLight = new SpotLight(0xffffff);
         spotLight.position.set(20, 40, -15);
         spotLight.castShadow = true;
-        spotLight.intensity = 2;
+        spotLight.intensity = 5;
         spotLight.lookAt(new Vector3(0, 0, 0));
         spotLight.shadowCameraNear = 2;
         spotLight.shadowCameraFar = 200;
@@ -146,7 +163,7 @@ var game = (() => {
         console.log("Added spotLight to scene");
         
         // Burnt Ground
-        groundGeometry = new BoxGeometry(51, 1, 51);
+        groundGeometry = new BoxGeometry(61, 1, 52);
         groundMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xe75d14 }), 0.4, 0);
         ground = new Physijs.ConvexMesh(groundGeometry, groundMaterial, 0);
         ground.position.set(0, 0, 0);
@@ -161,7 +178,7 @@ var game = (() => {
         wallOne.receiveShadow = true;
         wallOne.castShadow = true;
         wallOne.name = "wallOne";
-       // ground.add(wallOne);
+        ground.add(wallOne);
         console.log("Added wallOne to Scene");
 
         wallTwo = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
@@ -173,14 +190,14 @@ var game = (() => {
         console.log("Added wallTwo to Scene");
 
         wallThree = new Physijs.BoxMesh(new BoxGeometry(51, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
-        wallThree.position.set(-0.06, 5, -24.48);
+        wallThree.position.set(0.3, 5, -24.48);
         wallThree.receiveShadow = true;
         wallThree.castShadow = true;
         wallThree.name = "wallThree";
         scene.add(wallThree);
         console.log("Added wallThree to Scene");
 
-        wallFour = new Physijs.BoxMesh(new BoxGeometry(1, 10, 10), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallFour = new Physijs.BoxMesh(new BoxGeometry(1, 10, 13), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
         wallFour.position.set(25.32, 5, -17.5);
         wallFour.receiveShadow = true;
         wallFour.castShadow = true;
@@ -189,7 +206,7 @@ var game = (() => {
         console.log("Added wallFour to Scene");
 
         wallFive = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
-        wallFive.position.set(20.46, 5, -10.52);
+        wallFive.position.set(20.8, 5, -10.8);
         wallFive.receiveShadow = true;
         wallFive.castShadow = true;
         wallFive.name = "wallFive";
@@ -204,13 +221,127 @@ var game = (() => {
         scene.add(wallSix);
         console.log("Added wallSix to Scene");
 
-          wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0x000000 }), 0, 0), 0);
+        wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
         wallSeven.position.set(8.13,5,-10.61);
         wallSeven.receiveShadow = true;
         wallSeven.castShadow = true;
         wallSeven.name = "wallSeven";
         scene.add(wallSeven);
         console.log("Added wallSeven to Scene");
+        
+        wallEight = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallEight.position.set(12.83, 5, -17.7);
+        wallEight.receiveShadow = true;
+        wallEight.castShadow = true;
+        wallEight.name = "wallEight";
+        scene.add(wallEight);
+        console.log("Added wallEight to Scene");
+        
+        wallNine = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallNine.position.set(9.47, 5, 15.82);
+        wallNine.receiveShadow = true;
+        wallNine.castShadow = true;
+        wallNine.name = "wallNine";
+        scene.add(wallNine);
+        console.log("Added wallNine to Scene");
+        
+        wallTen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTen.position.set(4.86, 5, 6.4);
+        wallTen.receiveShadow = true;
+        wallTen.castShadow = true;
+        wallTen.name = "wallTen";
+        scene.add(wallTen);
+        console.log("Added wallTen to Scene");
+        
+        
+        wallEleven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 10), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallEleven.position.set(0.35, 5, 1.89);
+        wallEleven.receiveShadow = true;
+        wallEleven.castShadow = true;
+        wallEleven.name = "wallEleven";
+        scene.add(wallEleven);
+        console.log("Added wallEleven to Scene");
+        
+        wallTwelve = new Physijs.BoxMesh(new BoxGeometry(1, 10, 16), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTwelve.position.set(0.35, 5, -16.52);
+        wallTwelve.receiveShadow = true;
+        wallTwelve.castShadow = true;
+        wallTwelve.name = "wallTwelve";
+        scene.add(wallTwelve);
+        console.log("Added wallTwelve to Scene");
+        
+        wallThirteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallThirteen.position.set(-4.04, 5, 16.5);
+        wallThirteen.receiveShadow = true;
+        wallThirteen.castShadow = true;
+        wallThirteen.name = "wallThirteen";
+        scene.add(wallThirteen);
+        console.log("Added wallThirteen to Scene");
+        
+        wallFourteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallFourteen.position.set(-8.83, 5, 6.91);
+        wallFourteen.receiveShadow = true;
+        wallFourteen.castShadow = true;
+        wallFourteen.name = "wallFourteen";
+        scene.add(wallFourteen);
+        console.log("Added wallFourteen to Scene");
+        
+        wallFifteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallFifteen.position.set(-4.42, 5, -2.63);
+        wallFifteen.receiveShadow = true;
+        wallFifteen.castShadow = true;
+        wallFifteen.name = "wallFifteen";
+        scene.add(wallFifteen);
+        console.log("Added wallFifteen to Scene");
+        
+        wallSixteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 8), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallSixteen.position.set(-7.07, 5, -20.41);
+        wallSixteen.receiveShadow = true;
+        wallSixteen.castShadow = true;
+        wallSixteen.name = "wallSixteen";
+        scene.add(wallSixteen);
+        console.log("Added wallSixteen to Scene");
+        
+        wallSeventeen = new Physijs.BoxMesh(new BoxGeometry(12, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallSeventeen.position.set(-11.45, 5, -10.21);
+        wallSeventeen.receiveShadow = true;
+        wallSeventeen.castShadow = true;
+        wallSeventeen.name = "wallSeventeen";
+        scene.add(wallSeventeen);
+        console.log("Added wallSeventeen to Scene");
+        
+ 
+        wallEighteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 45), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallEighteen.position.set(-17.52, 5, 3.24);
+        wallEighteen.receiveShadow = true;
+        wallEighteen.castShadow = true;
+        wallEighteen.name = "wallEighteen";
+        scene.add(wallEighteen);
+        console.log("Added wallEighteen to Scene");
+        
+        wallNineteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallNineteen.position.set(-24.65, 5, -9.78);
+        wallNineteen.receiveShadow = true;
+        wallNineteen.castShadow = true;
+        wallNineteen.name = "wallNineteen";
+        scene.add(wallNineteen);
+        console.log("Added wallNineteen to Scene");
+        
+        wallTwenty = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTwenty.position.set(-24.51, 5, 18.18);
+        wallTwenty.receiveShadow = true;
+        wallTwenty.castShadow = true;
+        wallTwenty.name = "wallTwenty";
+        scene.add(wallTwenty);
+        console.log("Added wallTwenty to Scene");
+        
+        wallTwentyOne = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTwentyOne.position.set(18.01, 5, 6.67);
+        wallTwentyOne.receiveShadow = true;
+        wallTwentyOne.castShadow = true;
+        wallTwentyOne.name = " wallTwentyOne";
+        scene.add( wallTwentyOne);
+        console.log("Added  wallTwentyOne to Scene");
  
         // Player Object
         playerGeometry = new BoxGeometry(2, 2, 2);
@@ -365,7 +496,7 @@ var game = (() => {
     // Setup main camera for the scene
     function setupCamera(): void {
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 1000);
-        camera.position.set(50, 25, 80);
+        camera.position.set(70, 100, 80);
         camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
