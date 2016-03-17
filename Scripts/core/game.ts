@@ -155,7 +155,7 @@ var game = (() => {
         spotLight = new SpotLight(0xffffff);
         spotLight.position.set(20, 40, -15);
         spotLight.castShadow = true;
-        spotLight.intensity = 5;
+        spotLight.intensity = 3;
         spotLight.lookAt(new Vector3(0, 0, 0));
         spotLight.shadowCameraNear = 2;
         spotLight.shadowCameraFar = 200;
@@ -169,6 +169,10 @@ var game = (() => {
         spotLight.name = "Spot Light";
         scene.add(spotLight);
         console.log("Added spotLight to scene");
+        
+       // added ambient light       
+        var AmbiLight = new THREE.AmbientLight( 0x404040 ); // soft white light
+        scene.add(AmbiLight);
         
         // Burnt Ground
         groundGeometry = new BoxGeometry(61, 1, 52);
@@ -364,6 +368,7 @@ var game = (() => {
         console.log("Added Player to Scene");
 
         player.addEventListener('collision', (event) => {
+         
             if (event.name === "Ground") {
                 console.log("player hit the ground");
                 isGrounded = true;
@@ -536,9 +541,11 @@ var game = (() => {
 
     // Setup main camera for the scene
     function setupCamera(): void {
-        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 1000);
-     //   camera.position.set(70, 100, 80);
-     //   camera.lookAt(new Vector3(0, 0, 0));
+        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 300);
+      // comment two rows below to see first perspective view ++++++++++++++++++++++++++++++++++++
+      // I kept view from top to see general picture
+       camera.position.set(70, 100, 80);
+       camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
 
