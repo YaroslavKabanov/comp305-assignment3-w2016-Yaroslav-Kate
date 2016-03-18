@@ -176,7 +176,7 @@ var game = (() => {
         
         // Burnt Ground
         groundGeometry = new BoxGeometry(61, 1, 52);
-        groundMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xe75d14 }), 0.4, 0);
+        groundMaterial = Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/ground.jpg') }), 0.4, 0);
         ground = new Physijs.ConvexMesh(groundGeometry, groundMaterial, 0);
         ground.position.set(0, 0, 0);
         ground.receiveShadow = true;
@@ -185,7 +185,7 @@ var game = (() => {
         console.log("Added Burnt Ground to scene");
 
 
-        wallOne = new Physijs.BoxMesh(new BoxGeometry(51, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallOne = new Physijs.BoxMesh(new BoxGeometry(51, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallOne.position.set(0.48, 5, 25.51);
         wallOne.receiveShadow = true;
         wallOne.castShadow = true;
@@ -193,7 +193,7 @@ var game = (() => {
         ground.add(wallOne);
         console.log("Added wallOne to Scene");
 
-        wallTwo = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTwo = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTwo.position.set(25.56, 5, 10.99);
         wallTwo.receiveShadow = true;
         wallTwo.castShadow = true;
@@ -201,7 +201,7 @@ var game = (() => {
         scene.add(wallTwo);
         console.log("Added wallTwo to Scene");
 
-        wallThree = new Physijs.BoxMesh(new BoxGeometry(51, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallThree = new Physijs.BoxMesh(new BoxGeometry(51, 10, 1), Physijs.createMaterial(new LambertMaterial({  map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallThree.position.set(0.3, 5, -24.48);
         wallThree.receiveShadow = true;
         wallThree.castShadow = true;
@@ -209,7 +209,7 @@ var game = (() => {
         scene.add(wallThree);
         console.log("Added wallThree to Scene");
 
-        wallFour = new Physijs.BoxMesh(new BoxGeometry(1, 10, 13), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallFour = new Physijs.BoxMesh(new BoxGeometry(1, 10, 13), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallFour.position.set(25.32, 5, -17.5);
         wallFour.receiveShadow = true;
         wallFour.castShadow = true;
@@ -217,7 +217,7 @@ var game = (() => {
         scene.add(wallFour);
         console.log("Added wallFour to Scene");
 
-        wallFive = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallFive = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallFive.position.set(20.8, 5, -10.8);
         wallFive.receiveShadow = true;
         wallFive.castShadow = true;
@@ -225,7 +225,7 @@ var game = (() => {
         scene.add(wallFive);
         console.log("Added wallFive to Scene");
 
-        wallSix = new Physijs.BoxMesh(new BoxGeometry(18, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallSix = new Physijs.BoxMesh(new BoxGeometry(18, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallSix.position.set(16.56, 5, -3.52);
         wallSix.receiveShadow = true;
         wallSix.castShadow = true;
@@ -233,7 +233,7 @@ var game = (() => {
         scene.add(wallSix);
         console.log("Added wallSix to Scene");
 
-        wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallSeven.position.set(8.13,5,-10.61);
         wallSeven.receiveShadow = true;
         wallSeven.castShadow = true;
@@ -241,7 +241,7 @@ var game = (() => {
         scene.add(wallSeven);
         console.log("Added wallSeven to Scene");
         
-        wallEight = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallEight = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallEight.position.set(12.83, 5, -17.7);
         wallEight.receiveShadow = true;
         wallEight.castShadow = true;
@@ -249,7 +249,7 @@ var game = (() => {
         scene.add(wallEight);
         console.log("Added wallEight to Scene");
         
-        wallNine = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallNine = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallNine.position.set(9.47, 5, 15.82);
         wallNine.receiveShadow = true;
         wallNine.castShadow = true;
@@ -257,7 +257,7 @@ var game = (() => {
         scene.add(wallNine);
         console.log("Added wallNine to Scene");
         
-        wallTen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTen.position.set(4.86, 5, 6.4);
         wallTen.receiveShadow = true;
         wallTen.castShadow = true;
@@ -266,7 +266,7 @@ var game = (() => {
         console.log("Added wallTen to Scene");
         
         
-        wallEleven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 10), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallEleven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 10), Physijs.createMaterial(new LambertMaterial({map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg')}), 0, 0), 0);
         wallEleven.position.set(0.35, 5, 1.89);
         wallEleven.receiveShadow = true;
         wallEleven.castShadow = true;
@@ -274,7 +274,7 @@ var game = (() => {
         scene.add(wallEleven);
         console.log("Added wallEleven to Scene");
         
-        wallTwelve = new Physijs.BoxMesh(new BoxGeometry(1, 10, 16), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTwelve = new Physijs.BoxMesh(new BoxGeometry(1, 10, 16), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg')}), 0, 0), 0);
         wallTwelve.position.set(0.35, 5, -16.52);
         wallTwelve.receiveShadow = true;
         wallTwelve.castShadow = true;
@@ -282,7 +282,7 @@ var game = (() => {
         scene.add(wallTwelve);
         console.log("Added wallTwelve to Scene");
         
-        wallThirteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallThirteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallThirteen.position.set(-4.04, 5, 16.5);
         wallThirteen.receiveShadow = true;
         wallThirteen.castShadow = true;
@@ -290,7 +290,7 @@ var game = (() => {
         scene.add(wallThirteen);
         console.log("Added wallThirteen to Scene");
         
-        wallFourteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallFourteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallFourteen.position.set(-8.83, 5, 6.91);
         wallFourteen.receiveShadow = true;
         wallFourteen.castShadow = true;
@@ -298,7 +298,7 @@ var game = (() => {
         scene.add(wallFourteen);
         console.log("Added wallFourteen to Scene");
         
-        wallFifteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallFifteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallFifteen.position.set(-4.42, 5, -2.63);
         wallFifteen.receiveShadow = true;
         wallFifteen.castShadow = true;
@@ -306,7 +306,7 @@ var game = (() => {
         scene.add(wallFifteen);
         console.log("Added wallFifteen to Scene");
         
-        wallSixteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 8), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallSixteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 8), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallSixteen.position.set(-7.07, 5, -20.41);
         wallSixteen.receiveShadow = true;
         wallSixteen.castShadow = true;
@@ -314,7 +314,7 @@ var game = (() => {
         scene.add(wallSixteen);
         console.log("Added wallSixteen to Scene");
         
-        wallSeventeen = new Physijs.BoxMesh(new BoxGeometry(12, 10, 1), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallSeventeen = new Physijs.BoxMesh(new BoxGeometry(12, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallSeventeen.position.set(-11.45, 5, -10.21);
         wallSeventeen.receiveShadow = true;
         wallSeventeen.castShadow = true;
@@ -323,7 +323,7 @@ var game = (() => {
         console.log("Added wallSeventeen to Scene");
         
  
-        wallEighteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 45), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallEighteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 45), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallEighteen.position.set(-17.52, 5, 3.24);
         wallEighteen.receiveShadow = true;
         wallEighteen.castShadow = true;
@@ -331,7 +331,7 @@ var game = (() => {
         scene.add(wallEighteen);
         console.log("Added wallEighteen to Scene");
         
-        wallNineteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallNineteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallNineteen.position.set(-24.65, 5, -9.78);
         wallNineteen.receiveShadow = true;
         wallNineteen.castShadow = true;
@@ -339,7 +339,7 @@ var game = (() => {
         scene.add(wallNineteen);
         console.log("Added wallNineteen to Scene");
         
-        wallTwenty = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTwenty = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTwenty.position.set(-24.51, 5, 18.18);
         wallTwenty.receiveShadow = true;
         wallTwenty.castShadow = true;
@@ -347,7 +347,7 @@ var game = (() => {
         scene.add(wallTwenty);
         console.log("Added wallTwenty to Scene");
         
-        wallTwentyOne = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0, 0), 0);
+        wallTwentyOne = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTwentyOne.position.set(18.01, 5, 6.67);
         wallTwentyOne.receiveShadow = true;
         wallTwentyOne.castShadow = true;
@@ -374,7 +374,7 @@ var game = (() => {
                 isGrounded = true;
             }
             if (event.name === "wallSix") {
-                console.log("player hit the sphere");
+                console.log("player hit the wall 6");
             }
         });
         
