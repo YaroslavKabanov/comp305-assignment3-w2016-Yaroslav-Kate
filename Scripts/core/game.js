@@ -81,6 +81,9 @@ var game = (function () {
     var crystalMaterial;
     var crystals;
     var crystalCount = 5;
+    var deathPlaneGeometry;
+    var deathPlaneMaterial;
+    var deathPlane;
     // CreateJS Related Variables
     var assets;
     var canvas;
@@ -126,6 +129,7 @@ var game = (function () {
         instructions = document.getElementById("instructions");
         // Set Up CreateJS Canvas and Stage
         setupCanvas();
+        addDeathPlane();
         // Set Up Scoreboard
         setupScoreboard();
         //check to see if pointerlock is supported
@@ -360,6 +364,14 @@ var game = (function () {
                 setCrystalPosition(eventObject);
                 scoreLabel.text = "SCORE:" + scoreValue;
             }
+            if (eventObject.name === "DeathPlane") {
+                createjs.Sound.play("death");
+                livesValue--;
+                livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(22, 30, -0.33);
+                scene.add(player);
+            }
         });
         // Add DirectionLine
         directionLineMaterial = new LineBasicMaterial({ color: 0xffff00 });
@@ -389,6 +401,14 @@ var game = (function () {
         geometry.computeBoundingBox();
         return offset;
     }
+    function addDeathPlane() {
+        deathPlaneGeometry = new BoxGeometry(100, 1, 100);
+        deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({ color: 0xff0000 }), 0.4, 0.6);
+        deathPlane = new Physijs.BoxMesh(deathPlaneGeometry, deathPlaneMaterial, 0);
+        deathPlane.position.set(0, -10, 0);
+        deathPlane.name = "deathPlane";
+        scene.add(deathPlane);
+    }
     // add crystal to the scene
     function addCrystalMesh() {
         crystals = new Array(); // insttantiate a convex mesh array
@@ -409,8 +429,8 @@ var game = (function () {
     }
     //set crystal position
     function setCrystalPosition(crystal) {
-        var randomPointX = Math.floor(Math.random() * 20) - 10;
-        var randomPointZ = Math.floor(Math.random() * 20) - 10;
+        var randomPointX = Math.floor(Math.random() * 30) - 10;
+        var randomPointZ = Math.floor(Math.random() * 30) - 10;
         crystal.position.set(randomPointX, 10, randomPointZ);
         scene.add(crystal);
     }

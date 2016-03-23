@@ -92,6 +92,10 @@ var game = (() => {
     var crystals: Physijs.ConvexMesh[];
     var crystalCount: number = 5;
     
+    var deathPlaneGeometry: CubeGeometry;
+    var deathPlaneMaterial: Physijs.Material;
+    var deathPlane: Physijs.Mesh;
+    
       // CreateJS Related Variables
     var assets: createjs.LoadQueue;
     var canvas: HTMLElement;
@@ -151,7 +155,7 @@ var game = (() => {
           
           // Set Up CreateJS Canvas and Stage
         setupCanvas();
-
+        addDeathPlane();
         // Set Up Scoreboard
         setupScoreboard();
 
@@ -414,6 +418,10 @@ var game = (() => {
 
         // add crystal mesh exported from blender
            addCrystalMesh(); 
+           
+           
+           
+           
         // collision check
         player.addEventListener('collision', (eventObject) => {
          
@@ -429,6 +437,15 @@ var game = (() => {
                 scene.remove(eventObject);
                 setCrystalPosition(eventObject);
                 scoreLabel.text = "SCORE:" + scoreValue;
+            }
+            
+            if (eventObject.name === "DeathPlane") {
+                createjs.Sound.play("death");
+                livesValue--;
+                livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(22, 30, -0.33);
+                scene.add(player);
             }
         });
         
@@ -472,6 +489,16 @@ var game = (() => {
 		return offset;
 	}
     
+    function addDeathPlane(): void {
+        deathPlaneGeometry = new BoxGeometry(100, 1, 100); 
+        deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({color: 0xff0000}), 0.4, 0.6);
+       
+        deathPlane = new Physijs.BoxMesh(deathPlaneGeometry, deathPlaneMaterial, 0);
+        deathPlane.position.set(0, -10, 0); 
+        deathPlane.name = "deathPlane";
+        scene.add(deathPlane);
+    }
+    
     
         // add crystal to the scene
     function addCrystalMesh(): void {
@@ -497,8 +524,8 @@ var game = (() => {
     }
     //set crystal position
     function setCrystalPosition(crystal:Physijs.ConcaveMesh): void {
-        var randomPointX: number = Math.floor(Math.random()* 20) - 10;
-        var randomPointZ: number = Math.floor(Math.random()* 20) - 10;
+        var randomPointX: number = Math.floor(Math.random()* 30) - 10;
+        var randomPointZ: number = Math.floor(Math.random()* 30) - 10;
         crystal.position.set(randomPointX, 10, randomPointZ);
         scene.add(crystal);
     }
