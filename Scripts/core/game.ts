@@ -409,7 +409,7 @@ var game = (() => {
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
 
         player = new Physijs.BoxMesh(playerGeometry, playerMaterial, 1);
-        player.position.set(22, 30, -0.33);
+        player.position.set(22, 15, -0.33);
         player.receiveShadow = true;
         player.castShadow = true;
         player.name = "Player";
@@ -685,7 +685,7 @@ var game = (() => {
 
     // Setup main camera for the scene
     function setupCamera(): void {
-        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 300);
+        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 250);
       // comment two rows below to see first perspective view ++++++++++++++++++++++++++++++++++++
       // I kept view from top to see general picture
        camera.position.set(70, 100, 80);
