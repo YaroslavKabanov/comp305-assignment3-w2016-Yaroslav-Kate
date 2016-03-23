@@ -62,23 +62,23 @@ var game = (() => {
     var wallFour: Physijs.Mesh;
     var wallFive: Physijs.Mesh;
     var wallSix: Physijs.Mesh;
-    var wallSeven:Physijs.Mesh;
-    var wallEight:Physijs.Mesh;
-    var wallNine:Physijs.Mesh;
-    var wallTen:Physijs.Mesh;
-    var wallEleven:Physijs.Mesh;
-    var wallTwelve:Physijs.Mesh;
-    var wallThirteen:Physijs.Mesh;
-    var wallFourteen:Physijs.Mesh;
-    var wallFifteen:Physijs.Mesh;
-    var wallSixteen:Physijs.Mesh;
-    var wallSeventeen:Physijs.Mesh;
-    var wallEighteen:Physijs.Mesh;
-    var wallNineteen:Physijs.Mesh;
-    var wallTwenty:Physijs.Mesh;
-    var wallTwentyOne:Physijs.Mesh;
+    var wallSeven: Physijs.Mesh;
+    var wallEight: Physijs.Mesh;
+    var wallNine: Physijs.Mesh;
+    var wallTen: Physijs.Mesh;
+    var wallEleven: Physijs.Mesh;
+    var wallTwelve: Physijs.Mesh;
+    var wallThirteen: Physijs.Mesh;
+    var wallFourteen: Physijs.Mesh;
+    var wallFifteen: Physijs.Mesh;
+    var wallSixteen: Physijs.Mesh;
+    var wallSeventeen: Physijs.Mesh;
+    var wallEighteen: Physijs.Mesh;
+    var wallNineteen: Physijs.Mesh;
+    var wallTwenty: Physijs.Mesh;
+    var wallTwentyOne: Physijs.Mesh;
     var mouseControls: objects.MouseControls;
-    
+
     var keyboardControls: objects.KeyboardControls;
     var isGrounded: boolean;
     var velocity: Vector3 = new Vector3(0, 0, 0);
@@ -86,12 +86,20 @@ var game = (() => {
     var directionLineMaterial: LineBasicMaterial;
     var directionLineGeometry: Geometry;
     var directionLine: Line;
-    
+
     var crystalGeometry: Geometry;
     var crystalMaterial: Physijs.Material;
     var crystal: Physijs.ConvexMesh;
+
+    var lavaPuddleOne: Physij.Mesh;
+    var lavaPuddleTwo: Physij.Mesh;
+    var lavaPuddleThree: Physij.Mesh;
+    var lavaPuddleFour: Physij.Mesh;
+    var lavaPuddleFive: Physij.Mesh;
+    var lavaPuddleSix: Physij.Mesh;
     
-      // CreateJS Related Variables
+    
+    // CreateJS Related Variables
     var assets: createjs.LoadQueue;
     var canvas: HTMLElement;
     var stage: createjs.Stage;
@@ -100,22 +108,22 @@ var game = (() => {
     var scoreValue: number;
     var livesValue: number;
 
-   // function preload(): void {
-  //      assets = new createjs.LoadQueue();
-   //     assets.installPlugin(createjs.Sound);
-  //      assets.on("complete", init, this);
-      //  assets.loadManifest(manifest);
-  //  }
+    // function preload(): void {
+    //      assets = new createjs.LoadQueue();
+    //     assets.installPlugin(createjs.Sound);
+    //      assets.on("complete", init, this);
+    //  assets.loadManifest(manifest);
+    //  }
     
     function setupCanvas(): void {
         canvas = document.getElementById("canvas");
         canvas.setAttribute("width", config.Screen.WIDTH.toString());
-        canvas.setAttribute ("height", (config.Screen.HEIGHT * 0.1).toString());
+        canvas.setAttribute("height", (config.Screen.HEIGHT * 0.1).toString());
         canvas.style.backgroundColor = "#000000";
         stage = new createjs.Stage(canvas);
     }
-    
-       function setupScoreboard(): void {
+
+    function setupScoreboard(): void {
         // initialize  score and lives values
         scoreValue = 10;
         livesValue = 5;
@@ -133,7 +141,7 @@ var game = (() => {
 
         // Add Score Label
         scoreLabel = new createjs.Text(
-            "SCORE: " +timeUpdate(),
+            "SCORE: " + timeUpdate(),
             "40px Consolas",
             "#ffffff"
         );
@@ -147,7 +155,7 @@ var game = (() => {
         blocker = document.getElementById("blocker");
         instructions = document.getElementById("instructions");
           
-          // Set Up CreateJS Canvas and Stage
+        // Set Up CreateJS Canvas and Stage
         setupCanvas();
 
         // Set Up Scoreboard
@@ -158,7 +166,7 @@ var game = (() => {
             'mozPointerLockElement' in document ||
             'webkitPointerLockElement' in document;
 
-         // Instantiate Game Controls
+        // Instantiate Game Controls
         keyboardControls = new objects.KeyboardControls();
         mouseControls = new objects.MouseControls();
 
@@ -221,8 +229,8 @@ var game = (() => {
         scene.add(spotLight);
         console.log("Added spotLight to scene");
         
-       // added ambient light       
-        var AmbiLight = new THREE.AmbientLight( 0x404040 ); // soft white light
+        // added ambient light       
+        var AmbiLight = new THREE.AmbientLight(0x404040); // soft white light
         scene.add(AmbiLight);
         
         // Burnt Ground
@@ -252,7 +260,7 @@ var game = (() => {
         scene.add(wallTwo);
         console.log("Added wallTwo to Scene");
 
-        wallThree = new Physijs.BoxMesh(new BoxGeometry(51, 10, 1), Physijs.createMaterial(new LambertMaterial({  map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
+        wallThree = new Physijs.BoxMesh(new BoxGeometry(51, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallThree.position.set(0.3, 5, -24.48);
         wallThree.receiveShadow = true;
         wallThree.castShadow = true;
@@ -277,13 +285,13 @@ var game = (() => {
         console.log("Added wallSix to Scene");
 
         wallSeven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
-        wallSeven.position.set(8.13,5,-10.61);
+        wallSeven.position.set(8.13, 5, -10.61);
         wallSeven.receiveShadow = true;
         wallSeven.castShadow = true;
         wallSeven.name = "wallSeven";
         scene.add(wallSeven);
         console.log("Added wallSeven to Scene");
-        
+
         wallEight = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallEight.position.set(12.83, 5, -17.7);
         wallEight.receiveShadow = true;
@@ -291,7 +299,7 @@ var game = (() => {
         wallEight.name = "wallEight";
         scene.add(wallEight);
         console.log("Added wallEight to Scene");
-        
+
         wallNine = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallNine.position.set(9.47, 5, 15.82);
         wallNine.receiveShadow = true;
@@ -299,7 +307,7 @@ var game = (() => {
         wallNine.name = "wallNine";
         scene.add(wallNine);
         console.log("Added wallNine to Scene");
-        
+
         wallTen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTen.position.set(4.86, 5, 6.4);
         wallTen.receiveShadow = true;
@@ -307,24 +315,24 @@ var game = (() => {
         wallTen.name = "wallTen";
         scene.add(wallTen);
         console.log("Added wallTen to Scene");
-        
-        
-        wallEleven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 10), Physijs.createMaterial(new LambertMaterial({map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg')}), 0, 0), 0);
+
+
+        wallEleven = new Physijs.BoxMesh(new BoxGeometry(1, 10, 10), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallEleven.position.set(0.35, 5, 1.89);
         wallEleven.receiveShadow = true;
         wallEleven.castShadow = true;
         wallEleven.name = "wallEleven";
         scene.add(wallEleven);
         console.log("Added wallEleven to Scene");
-        
-        wallTwelve = new Physijs.BoxMesh(new BoxGeometry(1, 10, 16), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg')}), 0, 0), 0);
+
+        wallTwelve = new Physijs.BoxMesh(new BoxGeometry(1, 10, 16), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTwelve.position.set(0.35, 5, -16.52);
         wallTwelve.receiveShadow = true;
         wallTwelve.castShadow = true;
         wallTwelve.name = "wallTwelve";
         scene.add(wallTwelve);
         console.log("Added wallTwelve to Scene");
-        
+
         wallThirteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallThirteen.position.set(-4.04, 5, 16.5);
         wallThirteen.receiveShadow = true;
@@ -332,7 +340,7 @@ var game = (() => {
         wallThirteen.name = "wallThirteen";
         scene.add(wallThirteen);
         console.log("Added wallThirteen to Scene");
-        
+
         wallFourteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallFourteen.position.set(-8.83, 5, 6.91);
         wallFourteen.receiveShadow = true;
@@ -340,7 +348,7 @@ var game = (() => {
         wallFourteen.name = "wallFourteen";
         scene.add(wallFourteen);
         console.log("Added wallFourteen to Scene");
-        
+
         wallFifteen = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallFifteen.position.set(-4.42, 5, -2.63);
         wallFifteen.receiveShadow = true;
@@ -348,7 +356,7 @@ var game = (() => {
         wallFifteen.name = "wallFifteen";
         scene.add(wallFifteen);
         console.log("Added wallFifteen to Scene");
-        
+
         wallSixteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 8), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallSixteen.position.set(-7.07, 5, -20.41);
         wallSixteen.receiveShadow = true;
@@ -356,7 +364,7 @@ var game = (() => {
         wallSixteen.name = "wallSixteen";
         scene.add(wallSixteen);
         console.log("Added wallSixteen to Scene");
-        
+
         wallSeventeen = new Physijs.BoxMesh(new BoxGeometry(12, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallSeventeen.position.set(-11.45, 5, -10.21);
         wallSeventeen.receiveShadow = true;
@@ -364,8 +372,8 @@ var game = (() => {
         wallSeventeen.name = "wallSeventeen";
         scene.add(wallSeventeen);
         console.log("Added wallSeventeen to Scene");
-        
- 
+
+
         wallEighteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 45), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallEighteen.position.set(-17.52, 5, 3.24);
         wallEighteen.receiveShadow = true;
@@ -373,7 +381,7 @@ var game = (() => {
         wallEighteen.name = "wallEighteen";
         scene.add(wallEighteen);
         console.log("Added wallEighteen to Scene");
-        
+
         wallNineteen = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallNineteen.position.set(-24.65, 5, -9.78);
         wallNineteen.receiveShadow = true;
@@ -381,7 +389,7 @@ var game = (() => {
         wallNineteen.name = "wallNineteen";
         scene.add(wallNineteen);
         console.log("Added wallNineteen to Scene");
-        
+
         wallTwenty = new Physijs.BoxMesh(new BoxGeometry(1, 10, 15), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTwenty.position.set(-24.51, 5, 18.18);
         wallTwenty.receiveShadow = true;
@@ -389,14 +397,63 @@ var game = (() => {
         wallTwenty.name = "wallTwenty";
         scene.add(wallTwenty);
         console.log("Added wallTwenty to Scene");
-        
+
         wallTwentyOne = new Physijs.BoxMesh(new BoxGeometry(1, 10, 20), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallTwentyOne.position.set(18.01, 5, 6.67);
         wallTwentyOne.receiveShadow = true;
         wallTwentyOne.castShadow = true;
         wallTwentyOne.name = " wallTwentyOne";
-        scene.add( wallTwentyOne);
+        scene.add(wallTwentyOne);
         console.log("Added  wallTwentyOne to Scene");
+        
+        //adding lava paddles
+        lavaPuddleOne = new Physijs.BoxMesh(new BoxGeometry(7, 0.1, 7), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleOne.position.set(20.71, 0.15, 20.88);
+        lavaPuddleOne.receiveShadow = true;
+        lavaPuddleOne.castShadow = true;
+        lavaPuddleOne.name = "lavaPuddleOne";
+        scene.add(lavaPuddleOne);
+        console.log("Added  lavaPuddleOne to Scene");
+
+        lavaPuddleTwo = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleTwo.position.set(13.75, 1, -13.95);
+        lavaPuddleTwo.receiveShadow = true;
+        lavaPuddleTwo.castShadow = true;
+        lavaPuddleTwo.name = "lavaPuddleTwo";
+        scene.add(lavaPuddleTwo);
+        console.log("Added  lavaPuddleTwo to Scene");
+
+        lavaPuddleThree = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleThree.position.set(9.57, 1, 1.71);
+        lavaPuddleThree.receiveShadow = true;
+        lavaPuddleThree.castShadow = true;
+        lavaPuddleThree.name = "lavaPuddleThree";
+        scene.add(lavaPuddleThree);
+        console.log("Added  lavaPuddleThree to Scene");
+
+        lavaPuddleFour = new Physijs.BoxMesh(new BoxGeometry(8, 0.1, 8), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleFour.position.set(0.64, 1, 11.55);
+        lavaPuddleFour.receiveShadow = true;
+        lavaPuddleFour.castShadow = true;
+        lavaPuddleFour.name = "lavaPuddleFour";
+        scene.add(lavaPuddleFour);
+        console.log("Added  lavaPuddleFour to Scene");
+
+        lavaPuddleFive = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleFive.position.set(-11.14, 1, -14.26);
+        lavaPuddleFive.receiveShadow = true;
+        lavaPuddleFive.castShadow = true;
+        lavaPuddleFive.name = "lavaPuddleFive";
+        scene.add(lavaPuddleFive);
+        console.log("Added  lavaPuddleFive to Scene");
+
+        lavaPuddleSix = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleSix.position.set(-13.57, 1, 10.19);
+        lavaPuddleSix.receiveShadow = true;
+        lavaPuddleSix.castShadow = true;
+        lavaPuddleSix.name = "lavaPuddleSix";
+        scene.add(lavaPuddleSix);
+        console.log("Added  lavaPuddleSix to Scene");
  
         // Player Object
         playerGeometry = new BoxGeometry(2, 2, 2);
@@ -411,24 +468,25 @@ var game = (() => {
         console.log("Added Player to Scene");
 
         // add crystal mesh exported from blender
-           addCrystalMesh(); 
+        addCrystalMesh(); 
         // collision check
         player.addEventListener('collision', (event) => {
-         
+
             if (event.name === "Ground") {
                 console.log("player hit the ground");
                 isGrounded = true;
             }
-            if (event.name === "wallSix") {
-                console.log("player hit the wall 6");
+            if (event.name === "lavaPuddleOne" || "lavaPuddleTwo" || "lavaPuddleThree" || "lavaPuddleFour" || "lavaPuddleFive" || "lavaPuddleSix") {
+                console.log("player is dead");
+                livesValue -= 1;
             }
             if (event.name === "Crystal") {
                 console.log("11111111111");
-                scoreValue += 5; 
+                scoreValue += 5;
             }
         });
         
-         // Add DirectionLine
+        // Add DirectionLine
         directionLineMaterial = new LineBasicMaterial({ color: 0xffff00 });
         directionLineGeometry = new Geometry();
         directionLineGeometry.vertices.push(new Vector3(0, 0, 0)); // line origin
@@ -437,8 +495,8 @@ var game = (() => {
         player.add(directionLine);
         console.log("Added DirectionLine to the Player");
      
-            // create parent-child relationship with camera and player
-         player.add(camera);
+        // create parent-child relationship with camera and player
+        player.add(camera);
         
         // Add framerate stats
         addStatsObject();
@@ -450,36 +508,36 @@ var game = (() => {
 
         window.addEventListener('resize', onWindowResize, false);
     }
+
+    function setCenter(geometry: Geometry): Vector3 {
+
+        geometry.computeBoundingBox();
+
+        var bb = geometry.boundingBox;
+
+        var offset = new THREE.Vector3();
+
+        offset.addVectors(bb.min, bb.max);
+        offset.multiplyScalar(-0.5);
+
+        geometry.applyMatrix(new THREE.Matrix4().makeTranslation(offset.x, offset.y, offset.z));
+        geometry.computeBoundingBox();
+
+        return offset;
+    }
     
-    function setCenter ( geometry:Geometry ): Vector3 {
-
-		geometry.computeBoundingBox();
-
-		var bb = geometry.boundingBox;
-
-		var offset = new THREE.Vector3();
-
-		offset.addVectors( bb.min, bb.max );
-		offset.multiplyScalar( -0.5 );
-
-		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) );
-		geometry.computeBoundingBox();
-
-		return offset;
-	}
     
-    
-        // add crystal to the scene
+    // add crystal to the scene
     function addCrystalMesh(): void {
         crystalGeometry = new Geometry();
-        crystalMaterial =  Physijs.createMaterial(new LambertMaterial());
+        crystalMaterial = Physijs.createMaterial(new LambertMaterial());
         crystal = new Physijs.ConvexMesh(crystalGeometry, crystalMaterial);
-        
+
         var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/crystal.json", function(geometry: THREE.Geometry) {
             var phongMaterial = new PhongMaterial({ color: 0x50c878 });
             phongMaterial.emissive = new THREE.Color(0x50c878);
             var coinMaterial = Physijs.createMaterial((phongMaterial), 0.4, 0.6);
-            crystal = new Physijs.ConvexMesh(geometry, coinMaterial);     
+            crystal = new Physijs.ConvexMesh(geometry, coinMaterial);
             crystal.receiveShadow = true;
             crystal.castShadow = true;
             crystal.name = "Crystal";
@@ -492,8 +550,8 @@ var game = (() => {
     }
     //set crystal position
     function setCrystalPosition(): void {
-        var randomPointX: number = Math.floor(Math.random()* 20) - 10;
-        var randomPointZ: number = Math.floor(Math.random()* 20) - 10;
+        var randomPointX: number = Math.floor(Math.random() * 20) - 10;
+        var randomPointZ: number = Math.floor(Math.random() * 20) - 10;
         crystal.position.set(randomPointX, 10, randomPointZ);
         scene.add(crystal);
     }
@@ -520,9 +578,9 @@ var game = (() => {
         instructions.style.display = '';
         console.log("PointerLock Error Detected!!");
     }
-    function timeUpdate():number{
-        return scoreValue-=0.001;
-        
+    function timeUpdate(): number {
+        return scoreValue -= 0.001;
+
     }
     
     // Window Resize Event Handler
@@ -530,8 +588,8 @@ var game = (() => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        
-               canvas.style.width = "100%";
+
+        canvas.style.width = "100%";
         livesLabel.x = config.Screen.WIDTH * 0.1;
         livesLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
         scoreLabel.x = config.Screen.WIDTH * 0.8;
@@ -552,11 +610,11 @@ var game = (() => {
     // Setup main game loop
     function gameLoop(): void {
         stats.update();
-      
+
         checkControls();
         timeUpdate();
-      //  setupScoreboard();
-        console.log(scoreValue)
+        //  setupScoreboard();
+       // console.log(scoreValue)
         stage.update();
        
         // render using requestAnimationFrame
@@ -567,7 +625,7 @@ var game = (() => {
 
     }
     
-     // Check Controls Function
+    // Check Controls Function
     function checkControls(): void {
         if (keyboardControls.enabled) {
             velocity = new Vector3();
@@ -623,12 +681,12 @@ var game = (() => {
     
     
     //Camera Look function 
-    function cameraLook():void{
-        var zenith:number = THREE.Math.degToRad(90);
-        var nadir:number = THREE.Math.degToRad(-90);
+    function cameraLook(): void {
+        var zenith: number = THREE.Math.degToRad(90);
+        var nadir: number = THREE.Math.degToRad(-90);
         var cameraPitch = camera.rotation.x + mouseControls.pitch;
         // Constrain the Camera Pitch
-         camera.rotation.x = THREE.Math.clamp(cameraPitch, nadir, zenith);
+        camera.rotation.x = THREE.Math.clamp(cameraPitch, nadir, zenith);
     }
 
 
@@ -645,10 +703,10 @@ var game = (() => {
     // Setup main camera for the scene
     function setupCamera(): void {
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 300);
-      // comment two rows below to see first perspective view ++++++++++++++++++++++++++++++++++++
-      // I kept view from top to see general picture
-       camera.position.set(70, 100, 80);
-       camera.lookAt(new Vector3(0, 0, 0));
+        // comment two rows below to see first perspective view ++++++++++++++++++++++++++++++++++++
+        // I kept view from top to see general picture
+       // camera.position.set(70, 100, 80);
+       // camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
 
