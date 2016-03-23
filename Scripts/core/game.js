@@ -86,6 +86,11 @@ var game = (function () {
     var lavaPuddleFour;
     var lavaPuddleFive;
     var lavaPuddleSix;
+    var crystals;
+    var crystalCount = 5;
+    var deathPlaneGeometry;
+    var deathPlaneMaterial;
+    var deathPlane;
     // CreateJS Related Variables
     var assets;
     var canvas;
@@ -94,12 +99,13 @@ var game = (function () {
     var livesLabel;
     var scoreValue;
     var livesValue;
-    // function preload(): void {
-    //      assets = new createjs.LoadQueue();
-    //     assets.installPlugin(createjs.Sound);
-    //      assets.on("complete", init, this);
-    //  assets.loadManifest(manifest);
-    //  }
+    /*   function preload(): void {
+           assets = new createjs.LoadQueue();
+           assets.installPlugin(createjs.Sound);
+           assets.on("complete", init, this);
+           assets.loadManifest(manifest);
+       }
+       */
     function setupCanvas() {
         canvas = document.getElementById("canvas");
         canvas.setAttribute("width", config.Screen.WIDTH.toString());
@@ -130,6 +136,7 @@ var game = (function () {
         instructions = document.getElementById("instructions");
         // Set Up CreateJS Canvas and Stage
         setupCanvas();
+        addDeathPlane();
         // Set Up Scoreboard
         setupScoreboard();
         //check to see if pointerlock is supported
@@ -339,72 +346,79 @@ var game = (function () {
         console.log("Added  wallTwentyOne to Scene");
         //adding lava paddles
         lavaPuddleOne = new Physijs.BoxMesh(new BoxGeometry(7, 0.1, 7), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
-        lavaPuddleOne.position.set(20.71, 0.15, 20.88);
+        lavaPuddleOne.position.set(20.71, 0.5, 20.88);
         lavaPuddleOne.receiveShadow = true;
         lavaPuddleOne.castShadow = true;
-        lavaPuddleOne.name = "lavaPuddleOne";
+        lavaPuddleOne.name = "DeathPlane";
         scene.add(lavaPuddleOne);
         console.log("Added  lavaPuddleOne to Scene");
         lavaPuddleTwo = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
-        lavaPuddleTwo.position.set(13.75, 1, -13.95);
+        lavaPuddleTwo.position.set(13.75, 0.5, -13.95);
         lavaPuddleTwo.receiveShadow = true;
         lavaPuddleTwo.castShadow = true;
-        lavaPuddleTwo.name = "lavaPuddleTwo";
+        lavaPuddleTwo.name = "DeathPlane";
         scene.add(lavaPuddleTwo);
         console.log("Added  lavaPuddleTwo to Scene");
         lavaPuddleThree = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
-        lavaPuddleThree.position.set(9.57, 1, 1.71);
+        lavaPuddleThree.position.set(9.57, 0.5, 1.71);
         lavaPuddleThree.receiveShadow = true;
         lavaPuddleThree.castShadow = true;
-        lavaPuddleThree.name = "lavaPuddleThree";
+        lavaPuddleThree.name = "DeathPlane";
         scene.add(lavaPuddleThree);
         console.log("Added  lavaPuddleThree to Scene");
         lavaPuddleFour = new Physijs.BoxMesh(new BoxGeometry(8, 0.1, 8), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
-        lavaPuddleFour.position.set(0.64, 1, 11.55);
+        lavaPuddleFour.position.set(0.64, 0.5, 11.55);
         lavaPuddleFour.receiveShadow = true;
         lavaPuddleFour.castShadow = true;
-        lavaPuddleFour.name = "lavaPuddleFour";
+        lavaPuddleFour.name = "DeathPlane";
         scene.add(lavaPuddleFour);
         console.log("Added  lavaPuddleFour to Scene");
         lavaPuddleFive = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
-        lavaPuddleFive.position.set(-11.14, 1, -14.26);
+        lavaPuddleFive.position.set(-11.14, 0.5, -14.26);
         lavaPuddleFive.receiveShadow = true;
         lavaPuddleFive.castShadow = true;
-        lavaPuddleFive.name = "lavaPuddleFive";
+        lavaPuddleFive.name = "DeathPlane";
         scene.add(lavaPuddleFive);
         console.log("Added  lavaPuddleFive to Scene");
         lavaPuddleSix = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
-        lavaPuddleSix.position.set(-13.57, 1, 10.19);
+        lavaPuddleSix.position.set(-13.57, 0.5, 10.19);
         lavaPuddleSix.receiveShadow = true;
         lavaPuddleSix.castShadow = true;
-        lavaPuddleSix.name = "lavaPuddleSix";
+        lavaPuddleSix.name = "DeathPlane";
         scene.add(lavaPuddleSix);
         console.log("Added  lavaPuddleSix to Scene");
         // Player Object
-        playerGeometry = new BoxGeometry(2, 2, 2);
+        playerGeometry = new BoxGeometry(1, 6, 1);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
         player = new Physijs.BoxMesh(playerGeometry, playerMaterial, 1);
-        player.position.set(22, 30, -0.33);
+        player.position.set(22, 15, -0.33);
         player.receiveShadow = true;
         player.castShadow = true;
+        player.setAngularFactor(new Vector3(0, 0, 0));
         player.name = "Player";
         scene.add(player);
         console.log("Added Player to Scene");
         // add crystal mesh exported from blender
         addCrystalMesh();
         // collision check
-        player.addEventListener('collision', function (event) {
-            if (event.name === "Ground") {
+        player.addEventListener('collision', function (eventObject) {
+            if (eventObject.name === "Ground") {
                 console.log("player hit the ground");
                 isGrounded = true;
             }
-            if (event.name === "lavaPuddleOne" || "lavaPuddleTwo" || "lavaPuddleThree" || "lavaPuddleFour" || "lavaPuddleFive" || "lavaPuddleSix") {
-                console.log("player is dead");
-                livesValue -= 1;
-            }
-            if (event.name === "Crystal") {
-                console.log("11111111111");
+            if (eventObject.name === "Crystal") {
                 scoreValue += 5;
+                scene.remove(eventObject);
+                setCrystalPosition(eventObject);
+                scoreLabel.text = "SCORE:" + scoreValue;
+            }
+            if (eventObject.name === "DeathPlane") {
+                createjs.Sound.play("death");
+                livesValue--;
+                livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(22, 30, -0.33);
+                scene.add(player);
             }
         });
         // Add DirectionLine
@@ -435,28 +449,36 @@ var game = (function () {
         geometry.computeBoundingBox();
         return offset;
     }
+    function addDeathPlane() {
+        deathPlaneGeometry = new BoxGeometry(100, 1, 100);
+        deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({ color: 0xff0000 }), 0.4, 0.6);
+        deathPlane = new Physijs.BoxMesh(deathPlaneGeometry, deathPlaneMaterial, 0);
+        deathPlane.position.set(0, -10, 0);
+        deathPlane.name = "deathPlane";
+        scene.add(deathPlane);
+    }
     // add crystal to the scene
     function addCrystalMesh() {
-        crystalGeometry = new Geometry();
-        crystalMaterial = Physijs.createMaterial(new LambertMaterial());
-        crystal = new Physijs.ConvexMesh(crystalGeometry, crystalMaterial);
+        crystals = new Array(); // insttantiate a convex mesh array
         var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/crystal.json", function (geometry) {
             var phongMaterial = new PhongMaterial({ color: 0x50c878 });
             phongMaterial.emissive = new THREE.Color(0x50c878);
             var coinMaterial = Physijs.createMaterial((phongMaterial), 0.4, 0.6);
-            crystal = new Physijs.ConvexMesh(geometry, coinMaterial);
-            crystal.receiveShadow = true;
-            crystal.castShadow = true;
-            crystal.name = "Crystal";
-            scene.add(crystal);
-            setCrystalPosition();
+            for (var count = 0; count < crystalCount; count++) {
+                crystals[count] = new Physijs.ConvexMesh(geometry, coinMaterial);
+                crystals[count].receiveShadow = true;
+                crystals[count].castShadow = true;
+                crystals[count].name = "Crystal";
+                scene.add(crystals[count]);
+                setCrystalPosition(crystals[count]);
+            }
         });
         console.log("Added CRYSTAL Mesh to Scene");
     }
     //set crystal position
-    function setCrystalPosition() {
-        var randomPointX = Math.floor(Math.random() * 20) - 10;
-        var randomPointZ = Math.floor(Math.random() * 20) - 10;
+    function setCrystalPosition(crystal) {
+        var randomPointX = Math.floor(Math.random() * 30) - 10;
+        var randomPointZ = Math.floor(Math.random() * 30) - 10;
         crystal.position.set(randomPointX, 10, randomPointZ);
         scene.add(crystal);
     }
@@ -511,8 +533,13 @@ var game = (function () {
         stats.update();
         checkControls();
         timeUpdate();
-        //  setupScoreboard();
+        setupScoreboard();
         // console.log(scoreValue)
+        // make each crystal to rotate and be stable 
+        crystals.forEach(function (crystal) {
+            crystal.setAngularFactor(new Vector3(0, 0, 0));
+            crystal.setAngularVelocity(new Vector3(0, 1, 0));
+        });
         stage.update();
         // render using requestAnimationFrame
         requestAnimationFrame(gameLoop);
@@ -583,11 +610,11 @@ var game = (function () {
     }
     // Setup main camera for the scene
     function setupCamera() {
-        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 300);
+        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 250);
         // comment two rows below to see first perspective view ++++++++++++++++++++++++++++++++++++
         // I kept view from top to see general picture
         // camera.position.set(70, 100, 80);
-        // camera.lookAt(new Vector3(0, 0, 0));
+        //camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
     window.onload = init;
