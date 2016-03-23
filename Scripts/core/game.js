@@ -79,7 +79,8 @@ var game = (function () {
     var directionLine;
     var crystalGeometry;
     var crystalMaterial;
-    var crystal;
+    var crystals;
+    var crystalCount = 5;
     // CreateJS Related Variables
     var assets;
     var canvas;
@@ -88,12 +89,13 @@ var game = (function () {
     var livesLabel;
     var scoreValue;
     var livesValue;
-    // function preload(): void {
-    //      assets = new createjs.LoadQueue();
-    //     assets.installPlugin(createjs.Sound);
-    //      assets.on("complete", init, this);
-    //  assets.loadManifest(manifest);
-    //  }
+    /*   function preload(): void {
+           assets = new createjs.LoadQueue();
+           assets.installPlugin(createjs.Sound);
+           assets.on("complete", init, this);
+           assets.loadManifest(manifest);
+       }
+       */
     function setupCanvas() {
         canvas = document.getElementById("canvas");
         canvas.setAttribute("width", config.Screen.WIDTH.toString());
@@ -344,17 +346,19 @@ var game = (function () {
         // add crystal mesh exported from blender
         addCrystalMesh();
         // collision check
-        player.addEventListener('collision', function (event) {
-            if (event.name === "Ground") {
+        player.addEventListener('collision', function (eventObject) {
+            if (eventObject.name === "Ground") {
                 console.log("player hit the ground");
                 isGrounded = true;
             }
-            if (event.name === "wallSix") {
+            if (eventObject.name === "wallSix") {
                 console.log("player hit the wall 6");
             }
-            if (event.name === "Crystal") {
-                console.log("11111111111");
+            if (eventObject.name === "Crystal") {
                 scoreValue += 5;
+                scene.remove(eventObject);
+                setCrystalPosition(eventObject);
+                scoreLabel.text = "SCORE:" + scoreValue;
             }
         });
         // Add DirectionLine
@@ -387,24 +391,24 @@ var game = (function () {
     }
     // add crystal to the scene
     function addCrystalMesh() {
-        crystalGeometry = new Geometry();
-        crystalMaterial = Physijs.createMaterial(new LambertMaterial());
-        crystal = new Physijs.ConvexMesh(crystalGeometry, crystalMaterial);
+        crystals = new Array(); // insttantiate a convex mesh array
         var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/crystal.json", function (geometry) {
             var phongMaterial = new PhongMaterial({ color: 0x50c878 });
             phongMaterial.emissive = new THREE.Color(0x50c878);
             var coinMaterial = Physijs.createMaterial((phongMaterial), 0.4, 0.6);
-            crystal = new Physijs.ConvexMesh(geometry, coinMaterial);
-            crystal.receiveShadow = true;
-            crystal.castShadow = true;
-            crystal.name = "Crystal";
-            scene.add(crystal);
-            setCrystalPosition();
+            for (var count = 0; count < crystalCount; count++) {
+                crystals[count] = new Physijs.ConvexMesh(geometry, coinMaterial);
+                crystals[count].receiveShadow = true;
+                crystals[count].castShadow = true;
+                crystals[count].name = "Crystal";
+                scene.add(crystals[count]);
+                setCrystalPosition(crystals[count]);
+            }
         });
         console.log("Added CRYSTAL Mesh to Scene");
     }
     //set crystal position
-    function setCrystalPosition() {
+    function setCrystalPosition(crystal) {
         var randomPointX = Math.floor(Math.random() * 20) - 10;
         var randomPointZ = Math.floor(Math.random() * 20) - 10;
         crystal.position.set(randomPointX, 10, randomPointZ);
@@ -461,6 +465,11 @@ var game = (function () {
         stats.update();
         checkControls();
         timeUpdate();
+        // make each crystal to rotate and be stable 
+        crystals.forEach(function (crystal) {
+            crystal.setAngularFactor(new Vector3(0, 0, 0));
+            crystal.setAngularVelocity(new Vector3(0, 1, 0));
+        });
         //  setupScoreboard();
         console.log(scoreValue);
         stage.update();
