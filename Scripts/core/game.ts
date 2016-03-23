@@ -243,7 +243,7 @@ var game = (() => {
         wallOne.receiveShadow = true;
         wallOne.castShadow = true;
         wallOne.name = "wallOne";
-        ground.add(wallOne);
+        scene.add(wallOne);
         console.log("Added wallOne to Scene");
 
         wallTwo = new Physijs.BoxMesh(new BoxGeometry(1, 10, 51), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
@@ -405,7 +405,7 @@ var game = (() => {
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
 
         player = new Physijs.BoxMesh(playerGeometry, playerMaterial, 1);
-        player.position.set(0, 30, 10);
+        player.position.set(22, 30, -0.33);
         player.receiveShadow = true;
         player.castShadow = true;
         player.name = "Player";
