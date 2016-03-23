@@ -7,7 +7,6 @@ var PerspectiveCamera = THREE.PerspectiveCamera;
 var BoxGeometry = THREE.BoxGeometry;
 var CubeGeometry = THREE.CubeGeometry;
 var PlaneGeometry = THREE.PlaneGeometry;
-var SphereGeometry = THREE.SphereGeometry;
 var Geometry = THREE.Geometry;
 var Line = THREE.Line;
 var AxisHelper = THREE.AxisHelper;
@@ -15,21 +14,17 @@ var LambertMaterial = THREE.MeshLambertMaterial;
 var MeshBasicMaterial = THREE.MeshBasicMaterial;
 var Material = THREE.Material;
 var LineBasicMaterial = THREE.LineBasicMaterial;
+var PhongMaterial = THREE.MeshPhongMaterial;
 var Mesh = THREE.Mesh;
 var Object3D = THREE.Object3D;
 var SpotLight = THREE.SpotLight;
 var PointLight = THREE.PointLight;
 var AmbientLight = THREE.AmbientLight;
-var Control = objects.Control;
-var GUI = dat.GUI;
 var Color = THREE.Color;
 var Vector3 = THREE.Vector3;
 var Face3 = THREE.Face3;
-var Point = objects.Point;
 var CScreen = config.Screen;
 var Clock = THREE.Clock;
-//Custom Game Objects
-var gameObject = objects.gameObject;
 // Setup a Web Worker for Physijs
 Physijs.scripts.worker = "/Scripts/lib/Physijs/physijs_worker.js";
 Physijs.scripts.ammo = "/Scripts/lib/Physijs/examples/js/ammo.js";
@@ -41,8 +36,6 @@ var game = (function () {
     var scene = new Scene(); // Instantiate Scene Object
     var renderer;
     var camera;
-    var control;
-    var gui;
     var stats;
     var blocker;
     var instructions;
@@ -54,10 +47,7 @@ var game = (function () {
     var playerGeometry;
     var playerMaterial;
     var player;
-    var sphereGeometry;
-    var sphereMaterial;
-    var sphere;
-    // walls 
+    // walls for the maze
     var wallOne;
     var wallTwo;
     var wallThree;
@@ -87,10 +77,52 @@ var game = (function () {
     var directionLineMaterial;
     var directionLineGeometry;
     var directionLine;
+    // CreateJS Related Variables
+    var assets;
+    var canvas;
+    var stage;
+    var scoreLabel;
+    var livesLabel;
+    var scoreValue;
+    var livesValue;
+    // function preload(): void {
+    //      assets = new createjs.LoadQueue();
+    //     assets.installPlugin(createjs.Sound);
+    //      assets.on("complete", init, this);
+    //  assets.loadManifest(manifest);
+    //  }
+    function setupCanvas() {
+        canvas = document.getElementById("canvas");
+        canvas.setAttribute("width", config.Screen.WIDTH.toString());
+        canvas.setAttribute("height", (config.Screen.HEIGHT * 0.1).toString());
+        canvas.style.backgroundColor = "#000000";
+        stage = new createjs.Stage(canvas);
+    }
+    function setupScoreboard() {
+        // initialize  score and lives values
+        scoreValue = 10;
+        livesValue = 5;
+        // Add Lives Label
+        livesLabel = new createjs.Text("LIVES: " + livesValue, "40px Consolas", "#ffffff");
+        livesLabel.x = config.Screen.WIDTH * 0.1;
+        livesLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+        stage.addChild(livesLabel);
+        console.log("Added Lives Label to stage");
+        // Add Score Label
+        scoreLabel = new createjs.Text("SCORE: " + timeUpdate(), "40px Consolas", "#ffffff");
+        scoreLabel.x = config.Screen.WIDTH * 0.8;
+        scoreLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+        stage.addChild(scoreLabel);
+        console.log("Added Score Label to stage");
+    }
     function init() {
         // Create to HTMLElements
         blocker = document.getElementById("blocker");
         instructions = document.getElementById("instructions");
+        // Set Up CreateJS Canvas and Stage
+        setupCanvas();
+        // Set Up Scoreboard
+        setupScoreboard();
         //check to see if pointerlock is supported
         havePointerLock = 'pointerLockElement' in document ||
             'mozPointerLockElement' in document ||
@@ -332,10 +364,6 @@ var game = (function () {
         console.log("Added DirectionLine to the Player");
         // create parent-child relationship with camera and player
         player.add(camera);
-        // add controls
-        gui = new GUI();
-        control = new Control();
-        addControl(control);
         // Add framerate stats
         addStatsObject();
         console.log("Added Stats to scene...");
@@ -366,14 +394,20 @@ var game = (function () {
         instructions.style.display = '';
         console.log("PointerLock Error Detected!!");
     }
+    function timeUpdate() {
+        return scoreValue -= 0.01;
+    }
     // Window Resize Event Handler
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-    function addControl(controlObject) {
-        /* ENTER CODE for the GUI CONTROL HERE */
+        canvas.style.width = "100%";
+        livesLabel.x = config.Screen.WIDTH * 0.1;
+        livesLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+        scoreLabel.x = config.Screen.WIDTH * 0.8;
+        scoreLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+        stage.update();
     }
     // Add Frame Rate Stats to the Scene
     function addStatsObject() {
@@ -388,6 +422,10 @@ var game = (function () {
     function gameLoop() {
         stats.update();
         checkControls();
+        timeUpdate();
+        //  setupScoreboard();
+        console.log(scoreValue);
+        stage.update();
         // render using requestAnimationFrame
         requestAnimationFrame(gameLoop);
         // render the scene
