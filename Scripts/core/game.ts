@@ -25,7 +25,7 @@ import AmbientLight = THREE.AmbientLight;
 import Color = THREE.Color;
 import Vector3 = THREE.Vector3;
 import Face3 = THREE.Face3;
-import Point = objects.Point;
+
 import CScreen = config.Screen;
 import Clock = THREE.Clock;
 
@@ -240,8 +240,8 @@ var game = (() => {
         ground.add(wallOne);
         console.log("Added wallOne to Scene");
 
-        wallTwo = new Physijs.BoxMesh(new BoxGeometry(1, 10, 30), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
-        wallTwo.position.set(25.56, 5, 10.99);
+        wallTwo = new Physijs.BoxMesh(new BoxGeometry(1, 10, 51), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
+        wallTwo.position.set(26.56, 5, 0.5);
         wallTwo.receiveShadow = true;
         wallTwo.castShadow = true;
         wallTwo.name = "wallTwo";
@@ -261,7 +261,7 @@ var game = (() => {
         wallFour.receiveShadow = true;
         wallFour.castShadow = true;
         wallFour.name = "wallFour";
-        scene.add(wallFour);
+      //  scene.add(wallFour);
         console.log("Added wallFour to Scene");
 
         wallFive = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
