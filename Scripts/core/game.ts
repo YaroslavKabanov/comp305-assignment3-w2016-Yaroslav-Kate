@@ -256,14 +256,6 @@ var game = (() => {
         scene.add(wallThree);
         console.log("Added wallThree to Scene");
 
-        wallFour = new Physijs.BoxMesh(new BoxGeometry(1, 10, 13), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
-        wallFour.position.set(25.32, 5, -17.5);
-        wallFour.receiveShadow = true;
-        wallFour.castShadow = true;
-        wallFour.name = "wallFour";
-      //  scene.add(wallFour);
-        console.log("Added wallFour to Scene");
-
         wallFive = new Physijs.BoxMesh(new BoxGeometry(10, 10, 1), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/forest.jpg') }), 0, 0), 0);
         wallFive.position.set(20.8, 5, -10.8);
         wallFive.receiveShadow = true;
