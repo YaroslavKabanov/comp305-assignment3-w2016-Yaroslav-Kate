@@ -87,6 +87,10 @@ var game = (() => {
     var directionLineGeometry: Geometry;
     var directionLine: Line;
     
+    var crystalGeometry: Geometry;
+    var crystalMaterial: Physijs.Material;
+    var crystal: Physijs.ConvexMesh;
+    
       // CreateJS Related Variables
     var assets: createjs.LoadQueue;
     var canvas: HTMLElement;
@@ -406,6 +410,9 @@ var game = (() => {
         scene.add(player);
         console.log("Added Player to Scene");
 
+        // add crystal mesh exported from blender
+           addCrystalMesh(); 
+        // collision check
         player.addEventListener('collision', (event) => {
          
             if (event.name === "Ground") {
@@ -414,6 +421,10 @@ var game = (() => {
             }
             if (event.name === "wallSix") {
                 console.log("player hit the wall 6");
+            }
+            if (event.name === "Crystal") {
+                console.log("11111111111");
+                scoreValue += 5; 
             }
         });
         
@@ -440,6 +451,53 @@ var game = (() => {
         window.addEventListener('resize', onWindowResize, false);
     }
     
+    function setCenter ( geometry:Geometry ): Vector3 {
+
+		geometry.computeBoundingBox();
+
+		var bb = geometry.boundingBox;
+
+		var offset = new THREE.Vector3();
+
+		offset.addVectors( bb.min, bb.max );
+		offset.multiplyScalar( -0.5 );
+
+		geometry.applyMatrix( new THREE.Matrix4().makeTranslation( offset.x, offset.y, offset.z ) );
+		geometry.computeBoundingBox();
+
+		return offset;
+	}
+    
+    
+        // add crystal to the scene
+    function addCrystalMesh(): void {
+        crystalGeometry = new Geometry();
+        crystalMaterial =  Physijs.createMaterial(new LambertMaterial());
+        crystal = new Physijs.ConvexMesh(crystalGeometry, crystalMaterial);
+        
+        var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/crystal.json", function(geometry: THREE.Geometry) {
+            var phongMaterial = new PhongMaterial({ color: 0x50c878 });
+            phongMaterial.emissive = new THREE.Color(0x50c878);
+            var coinMaterial = Physijs.createMaterial((phongMaterial), 0.4, 0.6);
+            crystal = new Physijs.ConvexMesh(geometry, coinMaterial);     
+            crystal.receiveShadow = true;
+            crystal.castShadow = true;
+            crystal.name = "Crystal";
+            scene.add(crystal);
+            setCrystalPosition();
+
+        });
+
+        console.log("Added CRYSTAL Mesh to Scene");
+    }
+    //set crystal position
+    function setCrystalPosition(): void {
+        var randomPointX: number = Math.floor(Math.random()* 20) - 10;
+        var randomPointZ: number = Math.floor(Math.random()* 20) - 10;
+        crystal.position.set(randomPointX, 10, randomPointZ);
+        scene.add(crystal);
+    }
+    
     //PointerLockChange Event Handler
     function pointerLockChange(event): void {
         if (document.pointerLockElement === element) {
@@ -463,7 +521,7 @@ var game = (() => {
         console.log("PointerLock Error Detected!!");
     }
     function timeUpdate():number{
-        return scoreValue-=0.01;
+        return scoreValue-=0.001;
         
     }
     
@@ -500,7 +558,6 @@ var game = (() => {
       //  setupScoreboard();
         console.log(scoreValue)
         stage.update();
-        
        
         // render using requestAnimationFrame
         requestAnimationFrame(gameLoop);
