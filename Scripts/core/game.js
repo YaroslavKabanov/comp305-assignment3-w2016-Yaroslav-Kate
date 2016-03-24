@@ -124,7 +124,7 @@ var game = (function () {
         stage.addChild(livesLabel);
         console.log("Added Lives Label to stage");
         // Add Score Label
-        scoreLabel = new createjs.Text("TIME: " + scoreValue, "40px Consolas", "#ffffff");
+        scoreLabel = new createjs.Text("TIME: " + scoreValue.toFixed(3), "40px Consolas", "#ffffff");
         scoreLabel.x = config.Screen.WIDTH * 0.8;
         scoreLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
         stage.addChild(scoreLabel);
@@ -417,17 +417,25 @@ var game = (function () {
                 scoreValue += 5;
                 scene.remove(eventObject);
                 setCrystalPosition(eventObject);
-                scoreLabel.text = "SCORE:" + scoreValue;
+                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
             }
             if (eventObject.name === "DeathPlane") {
                 createjs.Sound.play("death");
                 livesValue--;
-                scoreValue = 10;
-                scoreLabel.text = "TIME: " + 10;
-                livesLabel.text = "LIVES: " + livesValue;
-                scene.remove(player);
-                player.position.set(22, 30, -0.33);
-                scene.add(player);
+                if (livesValue <= 0) {
+                    console.log("loooser!!!");
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scoreLabel.text = "GAME OVER!";
+                    scene.remove(player);
+                }
+                else {
+                    scoreValue = 10;
+                    scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scene.remove(player);
+                    player.position.set(22, 30, -0.33);
+                    scene.add(player);
+                }
             }
         });
         // Add DirectionLine
@@ -516,16 +524,24 @@ var game = (function () {
     //updates the time left til the game is over and check the remaining time
     function timeUpdate() {
         scoreValue -= 0.001;
-        scoreLabel.text = "TIME: " + scoreValue;
+        scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
         if (scoreValue <= 0) {
             createjs.Sound.play("death");
             livesValue--;
-            scoreValue = 10;
-            scoreLabel.text = "TIME: " + scoreValue;
-            livesLabel.text = "LIVES: " + livesValue;
-            scene.remove(player);
-            player.position.set(22, 30, -0.33);
-            scene.add(player);
+            if (livesValue <= 0) {
+                scene.remove(player);
+                livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(scoreLabel);
+                console.log("LOOOOSEEEER!!!");
+            }
+            else {
+                scoreValue = 10;
+                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
+                livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(22, 30, -0.33);
+                scene.add(player);
+            }
         }
     }
     // Window Resize Event Handler
