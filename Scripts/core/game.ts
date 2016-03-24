@@ -550,9 +550,9 @@ var game = (() => {
             }
            
             if (eventObject.name === "Finish") {
-                scoreValue += 10000;
+                scoreValue = scoreValue;
                 livesValue += 10000;          
-                //scoreLabel.text = "YOU WON!";
+                scoreLabel.text = "Good job";
                 livesLabel.text = "YOU WON!";
                 createjs.Sound.stop();
                 createjs.Sound.play("finish");
