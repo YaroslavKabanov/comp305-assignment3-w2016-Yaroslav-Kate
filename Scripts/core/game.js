@@ -418,17 +418,25 @@ var game = (function () {
                 scoreValue += 5;
                 scene.remove(eventObject);
                 setCrystalPosition(eventObject);
-                scoreLabel.text = "SCORE:" + scoreValue;
+                scoreLabel.text = "TIME: " + scoreValue;
             }
             if (eventObject.name === "DeathPlane") {
                 createjs.Sound.play("death");
                 livesValue--;
-                scoreValue = 10;
-                scoreLabel.text = "TIME: " + 10;
-                livesLabel.text = "LIVES: " + livesValue;
-                scene.remove(player);
-                player.position.set(22, 30, -0.33);
-                scene.add(player);
+                if (livesValue <= 0) {
+                    console.log("loooser!!!");
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scoreLabel.text = "TIME: " + 0;
+                    scene.remove(player);
+                }
+                else {
+                    scoreValue = 10;
+                    scoreLabel.text = "TIME: " + scoreValue;
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scene.remove(player);
+                    player.position.set(22, 30, -0.33);
+                    scene.add(player);
+                }
             }
         });
         // Add DirectionLine
@@ -521,12 +529,21 @@ var game = (function () {
         if (scoreValue <= 0) {
             createjs.Sound.play("death");
             livesValue--;
-            scoreValue = 10;
-            scoreLabel.text = "TIME: " + scoreValue;
-            livesLabel.text = "LIVES: " + livesValue;
-            scene.remove(player);
-            player.position.set(22, 30, -0.33);
-            scene.add(player);
+            if (livesValue <= 0) {
+                scene.remove(player);
+                livesLabel.text = "LIVES: " + livesValue;
+                scoreLabel.text = "TIME: " + 0;
+                console.log("LOOOOSEEEER!!!");
+                scoreLabel.text = "TIME: " + 0;
+            }
+            else {
+                scoreValue = 10;
+                scoreLabel.text = "TIME: " + scoreValue;
+                livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(22, 30, -0.33);
+                scene.add(player);
+            }
         }
     }
     // Window Resize Event Handler

@@ -98,12 +98,8 @@ var game = (() => {
     var lavaPuddleFour: Physijs.Mesh;
     var lavaPuddleFive: Physijs.Mesh;
     var lavaPuddleSix: Physijs.Mesh;
-<<<<<<< HEAD
 
-=======
     var finish: Physijs.Mesh;
-    
->>>>>>> 8c706819aa5d593a4a064fa3c91e2f5284da3929
 
     var crystals: Physijs.ConvexMesh[];
     var crystalCount: number = 5;
@@ -468,8 +464,8 @@ var game = (() => {
         lavaPuddleSix.name = "DeathPlane";
         scene.add(lavaPuddleSix);
         console.log("Added  lavaPuddleSix to Scene");
-        
-        
+
+
         finish = new Physijs.BoxMesh(new BoxGeometry(3, 2, 3), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/finish.jpg') }), 0, 0), 0);
         finish.position.set(-24.8, 1, 7.94);
         finish.receiveShadow = true;
@@ -506,18 +502,27 @@ var game = (() => {
                 scoreValue += 5;
                 scene.remove(eventObject);
                 setCrystalPosition(eventObject);
-                scoreLabel.text = "SCORE:" + scoreValue;
+                scoreLabel.text = "TIME: " + scoreValue;
             }
 
             if (eventObject.name === "DeathPlane") {
                 createjs.Sound.play("death");
                 livesValue--;
-                 scoreValue = 10;
-            scoreLabel.text = "TIME: " + 10;
-                livesLabel.text = "LIVES: " + livesValue;
-                scene.remove(player);
-                player.position.set(22, 30, -0.33);
-                scene.add(player);
+                if (livesValue <= 0) {
+                    console.log("loooser!!!");
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scoreLabel.text = "TIME: " + 0;
+                    scene.remove(player);
+                }
+                else {
+                    scoreValue = 10;
+                    scoreLabel.text = "TIME: " + scoreValue;
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scene.remove(player);
+                    player.position.set(22, 30, -0.33);
+                    scene.add(player);
+
+                }
 
             }
         });
@@ -629,17 +634,27 @@ var game = (() => {
     //updates the time left til the game is over and check the remaining time
     function timeUpdate(): void {
         scoreValue -= 0.001;
-         scoreLabel.text = "TIME: " + scoreValue;
-       if (scoreValue <= 0) {
+        scoreLabel.text = "TIME: " + scoreValue;
+        if (scoreValue <= 0) {
             createjs.Sound.play("death");
             livesValue--;
-            scoreValue = 10;
-            scoreLabel.text = "TIME: " + scoreValue;
-            livesLabel.text = "LIVES: " + livesValue;
-            scene.remove(player);
-            player.position.set(22, 30, -0.33);
-            scene.add(player);
-       }
+            if (livesValue <= 0) {
+                scene.remove(player);
+                livesLabel.text = "LIVES: " + livesValue;
+                scoreLabel.text = "TIME: " + 0;
+                console.log("LOOOOSEEEER!!!");
+                scoreLabel.text = "TIME: " + 0;
+            }
+            else {
+                scoreValue = 10;
+                scoreLabel.text = "TIME: " + scoreValue;
+                livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(22, 30, -0.33);
+                scene.add(player);
+            }
+
+        }
 
     }
     
