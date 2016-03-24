@@ -86,6 +86,7 @@ var game = (function () {
     var lavaPuddleFour;
     var lavaPuddleFive;
     var lavaPuddleSix;
+    var finish;
     var crystals;
     var crystalCount = 5;
     var deathPlaneGeometry;
@@ -539,7 +540,7 @@ var game = (function () {
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
                 livesLabel.text = "LIVES: " + livesValue;
                 scene.remove(player);
-                player.position.set(22, 30, -0.33);
+                player.position.set(22, 15, -0.33);
                 scene.add(player);
             }
         }

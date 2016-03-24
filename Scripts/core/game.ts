@@ -649,7 +649,7 @@ var game = (() => {
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
                 livesLabel.text = "LIVES: " + livesValue;
                 scene.remove(player);
-                player.position.set(22, 30, -0.33);
+                player.position.set(22, 15, -0.33);
                 scene.add(player);
             }
 
