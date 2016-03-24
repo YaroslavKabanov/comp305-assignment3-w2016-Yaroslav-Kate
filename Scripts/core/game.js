@@ -101,13 +101,17 @@ var game = (function () {
     var livesLabel;
     var scoreValue;
     var livesValue;
-    /*   function preload(): void {
-           assets = new createjs.LoadQueue();
-           assets.installPlugin(createjs.Sound);
-           assets.on("complete", init, this);
-           assets.loadManifest(manifest);
-       }
-       */
+    var manifest = [
+        { id: "hit", src: "../../Assets/audio/hit.mp3" },
+        { id: "crystal", src: "../../Assets/audio/crystal.wav" },
+        { id: "enemy", src: "../../Assets/audio/enemy.mp3" }
+    ];
+    function preload() {
+        assets = new createjs.LoadQueue();
+        assets.installPlugin(createjs.Sound);
+        assets.on("complete", init, this);
+        assets.loadManifest(manifest);
+    }
     function setupCanvas() {
         canvas = document.getElementById("canvas");
         canvas.setAttribute("width", config.Screen.WIDTH.toString());
@@ -419,6 +423,7 @@ var game = (function () {
         // collision check
         player.addEventListener('collision', function (eventObject) {
             if (eventObject.name === "Ground") {
+                createjs.Sound.play("hit");
                 console.log("player hit the ground");
                 isGrounded = true;
             }
@@ -427,9 +432,10 @@ var game = (function () {
                 scene.remove(eventObject);
                 setCrystalPosition(eventObject);
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
+                createjs.Sound.play("crystal");
             }
             if (eventObject.name === "DeathPlane") {
-                createjs.Sound.play("death");
+                createjs.Sound.play("enemy");
                 livesValue--;
                 if (livesValue <= 0) {
                     console.log("loooser!!!");
@@ -449,7 +455,7 @@ var game = (function () {
             }
             if (eventObject.name === "Finish") {
                 scoreValue += 10000;
-                livesLabel += 10000;
+                livesValue += 10000;
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
                 livesLabel.text = "LIVES: " + livesValue;
                 scene.remove(player);
@@ -678,7 +684,7 @@ var game = (function () {
         //camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
-    window.onload = init;
+    window.onload = preload;
     return {
         scene: scene
     };
