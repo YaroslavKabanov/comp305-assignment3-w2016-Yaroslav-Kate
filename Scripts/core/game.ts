@@ -417,7 +417,7 @@ var game = (() => {
         console.log("Added  wallTwentyOne to Scene");
         
         //adding lava paddles
-        lavaPuddleOne = new Physijs.BoxMesh(new BoxGeometry(7, 0.1, 7), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleOne = new Physijs.BoxMesh(new BoxGeometry(5, 0.1, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
         lavaPuddleOne.position.set(20.71, 0.5, 20.88);
         lavaPuddleOne.receiveShadow = true;
         lavaPuddleOne.castShadow = true;
@@ -425,7 +425,7 @@ var game = (() => {
         scene.add(lavaPuddleOne);
         console.log("Added  lavaPuddleOne to Scene");
 
-        lavaPuddleTwo = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleTwo = new Physijs.BoxMesh(new BoxGeometry(4, 0.1, 3), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
         lavaPuddleTwo.position.set(13.75, 0.5, -13.95);
         lavaPuddleTwo.receiveShadow = true;
         lavaPuddleTwo.castShadow = true;
@@ -433,7 +433,7 @@ var game = (() => {
         scene.add(lavaPuddleTwo);
         console.log("Added  lavaPuddleTwo to Scene");
 
-        lavaPuddleThree = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleThree = new Physijs.BoxMesh(new BoxGeometry(5, 0.1, 3), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
         lavaPuddleThree.position.set(9.57, 0.5, 1.71);
         lavaPuddleThree.receiveShadow = true;
         lavaPuddleThree.castShadow = true;
@@ -441,7 +441,7 @@ var game = (() => {
         scene.add(lavaPuddleThree);
         console.log("Added  lavaPuddleThree to Scene");
 
-        lavaPuddleFour = new Physijs.BoxMesh(new BoxGeometry(8, 0.1, 8), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleFour = new Physijs.BoxMesh(new BoxGeometry(3, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
         lavaPuddleFour.position.set(0.64, 0.5, 11.55);
         lavaPuddleFour.receiveShadow = true;
         lavaPuddleFour.castShadow = true;
@@ -449,7 +449,7 @@ var game = (() => {
         scene.add(lavaPuddleFour);
         console.log("Added  lavaPuddleFour to Scene");
 
-        lavaPuddleFive = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleFive = new Physijs.BoxMesh(new BoxGeometry(3, 0.1, 3), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
         lavaPuddleFive.position.set(-11.14, 0.5, -14.26);
         lavaPuddleFive.receiveShadow = true;
         lavaPuddleFive.castShadow = true;
@@ -457,7 +457,7 @@ var game = (() => {
         scene.add(lavaPuddleFive);
         console.log("Added  lavaPuddleFive to Scene");
 
-        lavaPuddleSix = new Physijs.BoxMesh(new BoxGeometry(6, 0.1, 6), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
+        lavaPuddleSix = new Physijs.BoxMesh(new BoxGeometry(3, 0.1, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
         lavaPuddleSix.position.set(-13.57, 0.5, 10.19);
         lavaPuddleSix.receiveShadow = true;
         lavaPuddleSix.castShadow = true;
@@ -475,7 +475,7 @@ var game = (() => {
         console.log("Added finish to Scene");
  
         // Player Object
-        playerGeometry = new BoxGeometry(1, 6, 1);
+        playerGeometry = new BoxGeometry(2, 3, 2);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
 
         player = new Physijs.BoxMesh(playerGeometry, playerMaterial, 1);
@@ -511,7 +511,8 @@ var game = (() => {
                 if (livesValue <= 0) {
                     console.log("loooser!!!");
                     livesLabel.text = "LIVES: " + livesValue;
-                     scoreLabel.text="GAME OVER!";
+                    scoreValue=0;
+                    scoreLabel.text = "TIME: " + scoreValue;
                     scene.remove(player);
                 }
                 else {
@@ -525,6 +526,13 @@ var game = (() => {
                 }
 
             }
+            if (eventObject.name === "Finish") {
+                scoreValue += 100000;
+                livesLabel+=10000;          
+                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
+                livesLabel.text = "LIVES: " + livesValue;
+            }
+            
         });
         
         // Add DirectionLine
@@ -636,14 +644,21 @@ var game = (() => {
         scoreValue -= 0.001;
         scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
         if (scoreValue <= 0) {
+             if (livesValue <= 0) {
+                  scoreValue = 0;
+                   scoreLabel.text = "TIME: " + scoreValue;
+             }
+             else{
             createjs.Sound.play("death");
             livesValue--;
             if (livesValue <= 0) {
                 scene.remove(player);
+                scoreValue=0;
                 livesLabel.text = "LIVES: " + livesValue;
-                 scene.remove(scoreLabel);
+                 scoreLabel.text = "TIME: " + scoreValue;
                 console.log("LOOOOSEEEER!!!");
             }
+        
             else {
                 scoreValue = 10;
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
@@ -653,6 +668,7 @@ var game = (() => {
                 scene.add(player);
             }
 
+        }
         }
 
     }
