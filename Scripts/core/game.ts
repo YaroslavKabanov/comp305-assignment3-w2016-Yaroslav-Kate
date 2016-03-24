@@ -98,7 +98,12 @@ var game = (() => {
     var lavaPuddleFour: Physijs.Mesh;
     var lavaPuddleFive: Physijs.Mesh;
     var lavaPuddleSix: Physijs.Mesh;
+<<<<<<< HEAD
 
+=======
+    var finish: Physijs.Mesh;
+    
+>>>>>>> 8c706819aa5d593a4a064fa3c91e2f5284da3929
 
     var crystals: Physijs.ConvexMesh[];
     var crystalCount: number = 5;
@@ -463,6 +468,15 @@ var game = (() => {
         lavaPuddleSix.name = "DeathPlane";
         scene.add(lavaPuddleSix);
         console.log("Added  lavaPuddleSix to Scene");
+        
+        
+        finish = new Physijs.BoxMesh(new BoxGeometry(3, 2, 3), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/finish.jpg') }), 0, 0), 0);
+        finish.position.set(-24.8, 1, 7.94);
+        finish.receiveShadow = true;
+        finish.castShadow = true;
+        finish.name = "Finish";
+        scene.add(finish);
+        console.log("Added finish to Scene");
  
         // Player Object
         playerGeometry = new BoxGeometry(1, 6, 1);
