@@ -86,7 +86,6 @@ var game = (function () {
     var lavaPuddleFour;
     var lavaPuddleFive;
     var lavaPuddleSix;
-    var finish;
     var crystals;
     var crystalCount = 5;
     var deathPlaneGeometry;
