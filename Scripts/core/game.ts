@@ -511,7 +511,8 @@ var game = (() => {
                 if (livesValue <= 0) {
                     console.log("loooser!!!");
                     livesLabel.text = "LIVES: " + livesValue;
-                     scoreLabel.text="GAME OVER!";
+                    scoreValue=0;
+                    scoreLabel.text = "TIME: " + scoreValue;
                     scene.remove(player);
                 }
                 else {
@@ -636,14 +637,21 @@ var game = (() => {
         scoreValue -= 0.001;
         scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
         if (scoreValue <= 0) {
+             if (livesValue <= 0) {
+                  scoreValue = 0;
+                   scoreLabel.text = "TIME: " + scoreValue;
+             }
+             else{
             createjs.Sound.play("death");
             livesValue--;
             if (livesValue <= 0) {
                 scene.remove(player);
+                scoreValue=0;
                 livesLabel.text = "LIVES: " + livesValue;
-                 scene.remove(scoreLabel);
+                 scoreLabel.text = "TIME: " + scoreValue;
                 console.log("LOOOOSEEEER!!!");
             }
+        
             else {
                 scoreValue = 10;
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
@@ -653,6 +661,7 @@ var game = (() => {
                 scene.add(player);
             }
 
+        }
         }
 
     }

@@ -426,7 +426,8 @@ var game = (function () {
                 if (livesValue <= 0) {
                     console.log("loooser!!!");
                     livesLabel.text = "LIVES: " + livesValue;
-                    scoreLabel.text = "GAME OVER!";
+                    scoreValue = 0;
+                    scoreLabel.text = "TIME: " + scoreValue;
                     scene.remove(player);
                 }
                 else {
@@ -527,21 +528,28 @@ var game = (function () {
         scoreValue -= 0.001;
         scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
         if (scoreValue <= 0) {
-            createjs.Sound.play("death");
-            livesValue--;
             if (livesValue <= 0) {
-                scene.remove(player);
-                livesLabel.text = "LIVES: " + livesValue;
-                scene.remove(scoreLabel);
-                console.log("LOOOOSEEEER!!!");
+                scoreValue = 0;
+                scoreLabel.text = "TIME: " + scoreValue;
             }
             else {
-                scoreValue = 10;
-                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
-                livesLabel.text = "LIVES: " + livesValue;
-                scene.remove(player);
-                player.position.set(22, 30, -0.33);
-                scene.add(player);
+                createjs.Sound.play("death");
+                livesValue--;
+                if (livesValue <= 0) {
+                    scene.remove(player);
+                    scoreValue = 0;
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scoreLabel.text = "TIME: " + scoreValue;
+                    console.log("LOOOOSEEEER!!!");
+                }
+                else {
+                    scoreValue = 10;
+                    scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
+                    livesLabel.text = "LIVES: " + livesValue;
+                    scene.remove(player);
+                    player.position.set(22, 30, -0.33);
+                    scene.add(player);
+                }
             }
         }
     }
