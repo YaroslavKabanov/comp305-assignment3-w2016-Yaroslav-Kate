@@ -151,7 +151,7 @@ var game = (() => {
 
         // Add Score Label
         scoreLabel = new createjs.Text(
-            "TIME: " + scoreValue,
+            "TIME: " + scoreValue.toFixed(3),
             "40px Consolas",
             "#ffffff"
         );
@@ -502,7 +502,7 @@ var game = (() => {
                 scoreValue += 5;
                 scene.remove(eventObject);
                 setCrystalPosition(eventObject);
-                scoreLabel.text = "TIME: " + scoreValue;
+                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
             }
 
             if (eventObject.name === "DeathPlane") {
@@ -511,12 +511,12 @@ var game = (() => {
                 if (livesValue <= 0) {
                     console.log("loooser!!!");
                     livesLabel.text = "LIVES: " + livesValue;
-                    scoreLabel.text = "TIME: " + 0;
+                     scoreLabel.text="GAME OVER!";
                     scene.remove(player);
                 }
                 else {
                     scoreValue = 10;
-                    scoreLabel.text = "TIME: " + scoreValue;
+                    scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
                     livesLabel.text = "LIVES: " + livesValue;
                     scene.remove(player);
                     player.position.set(22, 30, -0.33);
@@ -634,20 +634,19 @@ var game = (() => {
     //updates the time left til the game is over and check the remaining time
     function timeUpdate(): void {
         scoreValue -= 0.001;
-        scoreLabel.text = "TIME: " + scoreValue;
+        scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
         if (scoreValue <= 0) {
             createjs.Sound.play("death");
             livesValue--;
             if (livesValue <= 0) {
                 scene.remove(player);
                 livesLabel.text = "LIVES: " + livesValue;
-                scoreLabel.text = "TIME: " + 0;
+                 scene.remove(scoreLabel);
                 console.log("LOOOOSEEEER!!!");
-                scoreLabel.text = "TIME: " + 0;
             }
             else {
                 scoreValue = 10;
-                scoreLabel.text = "TIME: " + scoreValue;
+                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
                 livesLabel.text = "LIVES: " + livesValue;
                 scene.remove(player);
                 player.position.set(22, 30, -0.33);
