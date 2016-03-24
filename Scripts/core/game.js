@@ -1,5 +1,20 @@
 /// <reference path="_reference.ts"/>
 // MAIN GAME FILE
+//*********************************************************************
+//Source file: game.ts                                                *
+//Authors names:Yaroslav Kabanov                                      *
+//              Kateryna Bilokhvost                                   *
+//Initial commit: March 10, 2016                                      *
+//Last modified by: Kateryna Bilokhvost                               *
+//Last date modified: March 24, 2016                                  *
+//Commit history: GitHub Link: https://github.com/YaroslavKabanov/    *
+//comp305-assignment3-w2016-Yaroslav-Kate/commits/master              *
+//                                                                    *
+//Program description: This is the basic Three.js based first         *
+//person perspective game which is challenging player to escape       *
+//the mysterious maze with numerous traps before the time             *
+// elapses. Bonus items are hidden in the maze for extra time.        *
+//*********************************************************************
 // THREEJS Aliases
 var Scene = Physijs.Scene;
 var Renderer = THREE.WebGLRenderer;
@@ -97,9 +112,9 @@ var game = (function () {
     var assets;
     var canvas;
     var stage;
-    var scoreLabel;
+    var timeLabel;
     var livesLabel;
-    var scoreValue;
+    var timeValue;
     var livesValue;
     var manifest = [
         { id: "hit", src: "../../Assets/audio/hit.mp3" },
@@ -122,8 +137,8 @@ var game = (function () {
         stage = new createjs.Stage(canvas);
     }
     function setupScoreboard() {
-        // initialize  score and lives values
-        scoreValue = 10;
+        // initialize  time and lives values
+        timeValue = 10;
         livesValue = 5;
         // Add Lives Label
         livesLabel = new createjs.Text("LIVES: " + livesValue, "40px Consolas", "#ffffff");
@@ -131,12 +146,12 @@ var game = (function () {
         livesLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
         stage.addChild(livesLabel);
         console.log("Added Lives Label to stage");
-        // Add Score Label
-        scoreLabel = new createjs.Text("TIME: " + scoreValue.toFixed(3), "40px Consolas", "#ffffff");
-        scoreLabel.x = config.Screen.WIDTH * 0.8;
-        scoreLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
-        stage.addChild(scoreLabel);
-        console.log("Added Score Label to stage");
+        // Add Time Label
+        timeLabel = new createjs.Text("TIME: " + timeValue.toFixed(3), "40px Consolas", "#ffffff");
+        timeLabel.x = config.Screen.WIDTH * 0.8;
+        timeLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+        stage.addChild(timeLabel);
+        console.log("Added Time Label to stage");
     }
     function init() {
         // Create to HTMLElements
@@ -144,7 +159,6 @@ var game = (function () {
         instructions = document.getElementById("instructions");
         // Set Up CreateJS Canvas and Stage
         setupCanvas();
-        addDeathPlane();
         // Set Up Scoreboard
         setupScoreboard();
         // background music
@@ -354,7 +368,7 @@ var game = (function () {
         wallTwentyOne.name = " wallTwentyOne";
         scene.add(wallTwentyOne);
         console.log("Added  wallTwentyOne to Scene");
-        //adding lava paddles
+        //adding lava paddles tat kill the player
         lavaPuddleOne = new Physijs.BoxMesh(new BoxGeometry(5, 0.1, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/lava.jpg') }), 0, 0), 0);
         lavaPuddleOne.position.set(20.71, 0.5, 20.88);
         lavaPuddleOne.receiveShadow = true;
@@ -397,6 +411,7 @@ var game = (function () {
         lavaPuddleSix.name = "DeathPlane";
         scene.add(lavaPuddleSix);
         console.log("Added  lavaPuddleSix to Scene");
+        //add finish box. when player collides the finish box, he wins and goes to viewPosition
         finish = new Physijs.BoxMesh(new BoxGeometry(3, 2, 3), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/finish.jpg') }), 0, 0), 0);
         finish.position.set(-24.8, 1, 7.94);
         finish.receiveShadow = true;
@@ -404,6 +419,7 @@ var game = (function () {
         finish.name = "Finish";
         scene.add(finish);
         console.log("Added finish to Scene");
+        //player gets here when he wons the game
         viewPosition = new Physijs.BoxMesh(new BoxGeometry(5, 2, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/finish.jpg') }), 0, 0), 0);
         viewPosition.position.set(-45, 40, 0);
         viewPosition.receiveShadow = true;
@@ -432,10 +448,10 @@ var game = (function () {
                 isGrounded = true;
             }
             if (eventObject.name === "Crystal") {
-                scoreValue += 5;
+                timeValue += 5;
                 scene.remove(eventObject);
                 setCrystalPosition(eventObject);
-                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
+                timeLabel.text = "TIME: " + timeValue.toFixed(3);
                 createjs.Sound.play("crystal");
             }
             if (eventObject.name === "DeathPlane") {
@@ -443,14 +459,14 @@ var game = (function () {
                 livesValue--;
                 if (livesValue <= 0) {
                     console.log("loooser!!!");
-                    livesLabel.text = "LIVES: " + livesValue;
-                    scoreValue = 0;
-                    scoreLabel.text = "TIME: " + scoreValue;
+                    livesLabel.text = "YOU LOST!";
+                    timeLabel.text = "TRY AGAIN!";
+                    timeValue = 0;
                     scene.remove(player);
                 }
                 else {
-                    scoreValue = 10;
-                    scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
+                    timeValue = 10;
+                    timeLabel.text = "TIME: " + timeValue.toFixed(3);
                     livesLabel.text = "LIVES: " + livesValue;
                     scene.remove(player);
                     player.position.set(22, 15, -0.33);
@@ -458,9 +474,9 @@ var game = (function () {
                 }
             }
             if (eventObject.name === "Finish") {
-                scoreValue = scoreValue;
+                timeValue = 1000.001;
                 livesValue += 10000;
-                scoreLabel.text = "Good job";
+                timeLabel.text = "Good job";
                 livesLabel.text = "YOU WON!";
                 createjs.Sound.stop();
                 createjs.Sound.play("finish");
@@ -471,14 +487,6 @@ var game = (function () {
                 camera.lookAt(new Vector3(0, 0, 0));
             }
         });
-        // Add DirectionLine
-        directionLineMaterial = new LineBasicMaterial({ color: 0xffff00 });
-        directionLineGeometry = new Geometry();
-        directionLineGeometry.vertices.push(new Vector3(0, 0, 0)); // line origin
-        directionLineGeometry.vertices.push(new Vector3(0, 0, -50)); // end of the line
-        directionLine = new Line(directionLineGeometry, directionLineMaterial);
-        player.add(directionLine);
-        console.log("Added DirectionLine to the Player");
         // create parent-child relationship with camera and player
         player.add(camera);
         // Add framerate stats
@@ -489,6 +497,7 @@ var game = (function () {
         scene.simulate();
         window.addEventListener('resize', onWindowResize, false);
     }
+    //used for random  cristal position generation
     function setCenter(geometry) {
         geometry.computeBoundingBox();
         var bb = geometry.boundingBox;
@@ -498,14 +507,6 @@ var game = (function () {
         geometry.applyMatrix(new THREE.Matrix4().makeTranslation(offset.x, offset.y, offset.z));
         geometry.computeBoundingBox();
         return offset;
-    }
-    function addDeathPlane() {
-        deathPlaneGeometry = new BoxGeometry(100, 1, 100);
-        deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({ color: 0xff0000 }), 0.4, 0.6);
-        deathPlane = new Physijs.BoxMesh(deathPlaneGeometry, deathPlaneMaterial, 0);
-        deathPlane.position.set(0, -10, 0);
-        deathPlane.name = "deathPlane";
-        scene.add(deathPlane);
     }
     // add crystal to the scene
     function addCrystalMesh() {
@@ -556,30 +557,35 @@ var game = (function () {
     }
     //updates the time left til the game is over and check the remaining time
     function timeUpdate() {
-        scoreValue -= 0.001;
-        scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
-        if (scoreValue <= 0) {
-            if (livesValue <= 0) {
-                scoreValue = 0;
-                scoreLabel.text = "TIME: " + scoreValue;
-            }
-            else {
-                createjs.Sound.play("death");
-                livesValue--;
+        if (timeValue >= 1000) {
+            timeLabel.text = "GREAT JOB!!!";
+        }
+        else {
+            timeValue -= 0.001;
+            timeLabel.text = "TIME: " + timeValue.toFixed(3);
+            if (timeValue <= 0) {
                 if (livesValue <= 0) {
-                    scene.remove(player);
-                    scoreValue = 0;
-                    livesLabel.text = "LIVES: " + livesValue;
-                    scoreLabel.text = "TIME: " + scoreValue;
-                    console.log("LOOOOSEEEER!!!");
+                    timeValue = 0;
+                    timeLabel.text = "TRY AGAIN!";
                 }
                 else {
-                    scoreValue = 10;
-                    scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
-                    livesLabel.text = "LIVES: " + livesValue;
-                    scene.remove(player);
-                    player.position.set(22, 15, -0.33);
-                    scene.add(player);
+                    createjs.Sound.play("death");
+                    livesValue--;
+                    if (livesValue <= 0) {
+                        scene.remove(player);
+                        timeValue = 0;
+                        livesLabel.text = "YOU LOST!";
+                        timeLabel.text = "TRY AGAIN!";
+                        console.log("LOOOOSEEEER!!!");
+                    }
+                    else {
+                        timeValue = 10;
+                        timeLabel.text = "TIME: " + timeValue.toFixed(3);
+                        livesLabel.text = "LIVES: " + livesValue;
+                        scene.remove(player);
+                        player.position.set(22, 15, -0.33);
+                        scene.add(player);
+                    }
                 }
             }
         }
@@ -592,8 +598,8 @@ var game = (function () {
         canvas.style.width = "100%";
         livesLabel.x = config.Screen.WIDTH * 0.1;
         livesLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
-        scoreLabel.x = config.Screen.WIDTH * 0.8;
-        scoreLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
+        timeLabel.x = config.Screen.WIDTH * 0.8;
+        timeLabel.y = (config.Screen.HEIGHT * 0.15) * 0.20;
         stage.update();
     }
     // Add Frame Rate Stats to the Scene
