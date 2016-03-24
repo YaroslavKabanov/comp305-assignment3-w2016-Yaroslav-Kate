@@ -87,6 +87,7 @@ var game = (function () {
     var lavaPuddleFive;
     var lavaPuddleSix;
     var finish;
+    var viewPosition;
     var crystals;
     var crystalCount = 5;
     var deathPlaneGeometry;
@@ -395,6 +396,13 @@ var game = (function () {
         finish.name = "Finish";
         scene.add(finish);
         console.log("Added finish to Scene");
+        viewPosition = new Physijs.BoxMesh(new BoxGeometry(5, 2, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/finish.jpg') }), 0, 0), 0);
+        viewPosition.position.set(-45, 40, 0);
+        viewPosition.receiveShadow = true;
+        viewPosition.castShadow = true;
+        viewPosition.name = "viewPosition";
+        scene.add(viewPosition);
+        console.log("Added viewPosition to Scene");
         // Player Object
         playerGeometry = new BoxGeometry(2, 3, 2);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
@@ -440,10 +448,13 @@ var game = (function () {
                 }
             }
             if (eventObject.name === "Finish") {
-                scoreValue += 100000;
+                scoreValue += 10000;
                 livesLabel += 10000;
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
                 livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(-45, 50, 0);
+                scene.add(player);
             }
         });
         // Add DirectionLine

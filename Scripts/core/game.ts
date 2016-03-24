@@ -100,6 +100,7 @@ var game = (() => {
     var lavaPuddleSix: Physijs.Mesh;
 
     var finish: Physijs.Mesh;
+    var viewPosition: Physijs.Mesh;
 
     var crystals: Physijs.ConvexMesh[];
     var crystalCount: number = 5;
@@ -473,6 +474,14 @@ var game = (() => {
         finish.name = "Finish";
         scene.add(finish);
         console.log("Added finish to Scene");
+        
+        viewPosition = new Physijs.BoxMesh(new BoxGeometry(5, 2, 5), Physijs.createMaterial(new LambertMaterial({ map: THREE.ImageUtils.loadTexture('../Assets/images/finish.jpg') }), 0, 0), 0);
+        viewPosition.position.set(-45, 40, 0);
+        viewPosition.receiveShadow = true;
+        viewPosition.castShadow = true;
+        viewPosition.name = "viewPosition";
+        scene.add(viewPosition);
+        console.log("Added viewPosition to Scene");
  
         // Player Object
         playerGeometry = new BoxGeometry(2, 3, 2);
@@ -526,11 +535,15 @@ var game = (() => {
                 }
 
             }
+           
             if (eventObject.name === "Finish") {
-                scoreValue += 100000;
+                scoreValue += 10000;
                 livesLabel+=10000;          
                 scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
                 livesLabel.text = "LIVES: " + livesValue;
+                scene.remove(player);
+                player.position.set(-45, 50, 0);
+                scene.add(player);
             }
             
         });
