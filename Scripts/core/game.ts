@@ -92,17 +92,17 @@ var game = (() => {
 
     var crystal: Physijs.ConvexMesh;
 
-    var lavaPuddleOne: Physij.Mesh;
-    var lavaPuddleTwo: Physij.Mesh;
-    var lavaPuddleThree: Physij.Mesh;
-    var lavaPuddleFour: Physij.Mesh;
-    var lavaPuddleFive: Physij.Mesh;
-    var lavaPuddleSix: Physij.Mesh;
-    
+    var lavaPuddleOne: Physijs.Mesh;
+    var lavaPuddleTwo: Physijs.Mesh;
+    var lavaPuddleThree: Physijs.Mesh;
+    var lavaPuddleFour: Physijs.Mesh;
+    var lavaPuddleFive: Physijs.Mesh;
+    var lavaPuddleSix: Physijs.Mesh;
+
 
     var crystals: Physijs.ConvexMesh[];
     var crystalCount: number = 5;
-    
+
     var deathPlaneGeometry: CubeGeometry;
     var deathPlaneMaterial: Physijs.Material;
     var deathPlane: Physijs.Mesh;
@@ -116,14 +116,14 @@ var game = (() => {
     var scoreValue: number;
     var livesValue: number;
 
- /*   function preload(): void {
-        assets = new createjs.LoadQueue();
-        assets.installPlugin(createjs.Sound);
-        assets.on("complete", init, this);
-        assets.loadManifest(manifest);
-    }
-    */
-    
+    /*   function preload(): void {
+           assets = new createjs.LoadQueue();
+           assets.installPlugin(createjs.Sound);
+           assets.on("complete", init, this);
+           assets.loadManifest(manifest);
+       }
+       */
+
     function setupCanvas(): void {
         canvas = document.getElementById("canvas");
         canvas.setAttribute("width", config.Screen.WIDTH.toString());
@@ -150,7 +150,7 @@ var game = (() => {
 
         // Add Score Label
         scoreLabel = new createjs.Text(
-            "SCORE: " + timeUpdate(),
+            "TIME: " + scoreValue,
             "40px Consolas",
             "#ffffff"
         );
@@ -479,11 +479,11 @@ var game = (() => {
 
         // add crystal mesh exported from blender
 
-           addCrystalMesh(); 
+        addCrystalMesh(); 
            
         // collision check
         player.addEventListener('collision', (eventObject) => {
-         
+
             if (eventObject.name === "Ground") {
                 console.log("player hit the ground");
                 isGrounded = true;
@@ -494,10 +494,12 @@ var game = (() => {
                 setCrystalPosition(eventObject);
                 scoreLabel.text = "SCORE:" + scoreValue;
             }
-            
+
             if (eventObject.name === "DeathPlane") {
                 createjs.Sound.play("death");
                 livesValue--;
+                 scoreValue = 10;
+            scoreLabel.text = "TIME: " + 10;
                 livesLabel.text = "LIVES: " + livesValue;
                 scene.remove(player);
                 player.position.set(22, 30, -0.33);
@@ -545,13 +547,13 @@ var game = (() => {
 
         return offset;
     }
-    
+
     function addDeathPlane(): void {
-        deathPlaneGeometry = new BoxGeometry(100, 1, 100); 
-        deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({color: 0xff0000}), 0.4, 0.6);
-       
+        deathPlaneGeometry = new BoxGeometry(100, 1, 100);
+        deathPlaneMaterial = Physijs.createMaterial(new MeshBasicMaterial({ color: 0xff0000 }), 0.4, 0.6);
+
         deathPlane = new Physijs.BoxMesh(deathPlaneGeometry, deathPlaneMaterial, 0);
-        deathPlane.position.set(0, -10, 0); 
+        deathPlane.position.set(0, -10, 0);
         deathPlane.name = "deathPlane";
         scene.add(deathPlane);
     }
@@ -559,29 +561,29 @@ var game = (() => {
     
     // add crystal to the scene
     function addCrystalMesh(): void {
-crystals = new Array<Physijs.ConvexMesh>(); // insttantiate a convex mesh array
+        crystals = new Array<Physijs.ConvexMesh>(); // insttantiate a convex mesh array
         
         var coinLoader = new THREE.JSONLoader().load("../../Assets/imported/crystal.json", function(geometry: THREE.Geometry) {
             var phongMaterial = new PhongMaterial({ color: 0x50c878 });
             phongMaterial.emissive = new THREE.Color(0x50c878);
             var coinMaterial = Physijs.createMaterial((phongMaterial), 0.4, 0.6);
-            
+
             for (var count: number = 0; count < crystalCount; count++) {
-                crystals[count] = new Physijs.ConvexMesh(geometry, coinMaterial);     
+                crystals[count] = new Physijs.ConvexMesh(geometry, coinMaterial);
                 crystals[count].receiveShadow = true;
                 crystals[count].castShadow = true;
                 crystals[count].name = "Crystal";
                 scene.add(crystals[count]);
                 setCrystalPosition(crystals[count]);
-            }  
+            }
         });
 
         console.log("Added CRYSTAL Mesh to Scene");
     }
     //set crystal position
-    function setCrystalPosition(crystal:Physijs.ConcaveMesh): void {
-        var randomPointX: number = Math.floor(Math.random()* 30) - 10;
-        var randomPointZ: number = Math.floor(Math.random()* 30) - 10;
+    function setCrystalPosition(crystal: Physijs.ConcaveMesh): void {
+        var randomPointX: number = Math.floor(Math.random() * 30) - 10;
+        var randomPointZ: number = Math.floor(Math.random() * 30) - 10;
 
         crystal.position.set(randomPointX, 10, randomPointZ);
         scene.add(crystal);
@@ -609,11 +611,25 @@ crystals = new Array<Physijs.ConvexMesh>(); // insttantiate a convex mesh array
         instructions.style.display = '';
         console.log("PointerLock Error Detected!!");
     }
-    function timeUpdate(): number {
-        return scoreValue -= 0.001;
+    
+    //updates the time left til the game is over and check the remaining time
+    function timeUpdate(): void {
+        scoreValue -= 0.001;
+         scoreLabel.text = "TIME: " + scoreValue;
+       if (scoreValue <= 0) {
+            createjs.Sound.play("death");
+            livesValue--;
+            scoreValue = 10;
+            scoreLabel.text = "TIME: " + scoreValue;
+            livesLabel.text = "LIVES: " + livesValue;
+            scene.remove(player);
+            player.position.set(22, 30, -0.33);
+            scene.add(player);
+       }
 
     }
     
+ 
     // Window Resize Event Handler
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -643,16 +659,14 @@ crystals = new Array<Physijs.ConvexMesh>(); // insttantiate a convex mesh array
         stats.update();
 
         checkControls();
+
         timeUpdate();
-
-          setupScoreboard();
-       // console.log(scoreValue)
-
-        
+       
+     
         // make each crystal to rotate and be stable 
         crystals.forEach(crystal => {
-          crystal.setAngularFactor(new Vector3(0, 0, 0));
-          crystal.setAngularVelocity(new Vector3(0, 1, 0));  
+            crystal.setAngularFactor(new Vector3(0, 0, 0));
+            crystal.setAngularVelocity(new Vector3(0, 1, 0));
         });
         stage.update();
        
@@ -744,8 +758,8 @@ crystals = new Array<Physijs.ConvexMesh>(); // insttantiate a convex mesh array
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 250);
         // comment two rows below to see first perspective view ++++++++++++++++++++++++++++++++++++
         // I kept view from top to see general picture
-       // camera.position.set(70, 100, 80);
-       //camera.lookAt(new Vector3(0, 0, 0));
+        // camera.position.set(70, 100, 80);
+        //camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
 
