@@ -121,7 +121,9 @@ var game = (() => {
     var manifest = [
         {id: "hit", src: "../../Assets/audio/hit.mp3"},
         {id: "crystal", src: "../../Assets/audio/crystal.wav"},
-        {id: "enemy", src: "../../Assets/audio/enemy.mp3"}
+        {id: "enemy", src: "../../Assets/audio/enemy.mp3"},
+        {id: "background", src: "../../Assets/audio/background.mp3"},
+        {id: "finish", src: "../../Assets/audio/finish.mp3"}
     ];
 
       function preload(): void {
@@ -177,7 +179,10 @@ var game = (() => {
         addDeathPlane();
         // Set Up Scoreboard
         setupScoreboard();
-
+        
+        // background music
+        createjs.Sound.play("background");
+        
         //check to see if pointerlock is supported
         havePointerLock = 'pointerLockElement' in document ||
             'mozPointerLockElement' in document ||
@@ -547,11 +552,15 @@ var game = (() => {
             if (eventObject.name === "Finish") {
                 scoreValue += 10000;
                 livesValue += 10000;          
-                scoreLabel.text = "TIME: " + scoreValue.toFixed(3);
-                livesLabel.text = "LIVES: " + livesValue;
+                //scoreLabel.text = "YOU WON!";
+                livesLabel.text = "YOU WON!";
+                createjs.Sound.stop();
+                createjs.Sound.play("finish");
                 scene.remove(player);
                 player.position.set(-45, 50, 0);
                 scene.add(player);
+                camera.position.set(70, 100, 80);
+                camera.lookAt(new Vector3(0, 0, 0));
             }
             
         });
@@ -820,7 +829,7 @@ var game = (() => {
 
     // Setup main camera for the scene
     function setupCamera(): void {
-        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 250);
+        camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 300);
         // comment two rows below to see first perspective view ++++++++++++++++++++++++++++++++++++
         // I kept view from top to see general picture
         // camera.position.set(70, 100, 80);
